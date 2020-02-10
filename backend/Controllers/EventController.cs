@@ -7,18 +7,20 @@ using System.Web.Http;
 
 namespace backend.Controllers
 {
+    [RoutePrefix("Event")]
     public class EventController : ApiController
     {
-        // GET: api/Event
-        public IEnumerable<string> Get()
+        [Route("getAllEvents/")]
+        [HttpGet]
+        public IEnumerable<string> GetAllEvents()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET: api/Event/5
-        public string Get(int id)
+        [Route("getEventById/")]
+        public string GetEventById(int id)
         {
-            return "value";
+            return id.ToString();
         }
 
         // POST: api/Event
