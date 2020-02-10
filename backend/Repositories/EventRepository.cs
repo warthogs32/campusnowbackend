@@ -12,28 +12,42 @@ namespace backend.Repositories
     {
         public EventModel GetEventById(int eventId)
         {
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString);
-            conn.Open();
-            string getEventQuery = "select * from cn.Events where ListingId = @eventId";
-            SqlCommand cmd = new SqlCommand(getEventQuery, conn);
-            cmd.Parameters.AddWithValue("@eventId", eventId);
             EventModel retrievedEvent = new EventModel();
-            using(SqlDataReader reader = cmd.ExecuteReader())
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
             {
-                if (reader.Read())
+                conn.Open();
+                string getEventQuery = "select * from cn.Events where ListingId = @eventId";
+                using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
                 {
-                    retrievedEvent = new EventModel()
+                    cmd.Parameters.AddWithValue("@eventId", eventId);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        ListingId = Int32.Parse(reader["ListingId"].ToString())
-                    };
-                }
+                        if (reader.Read())
+                        {
+                            retrievedEvent = new EventModel()
+                            {
+                                ListingId = Int32.Parse(reader["ListingId"].ToString())
+                            };
+                        }
+                    }
+                }               
             }
-
             return retrievedEvent;
         }
 
         public bool PostNewEvent()
         {
+            EventModel newEvent = new EventModel();
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
+            {
+                conn.Open();
+                string getEventQuery = "select * from cn.Events where ListingId = @eventId";
+                using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@eventId", eventId);
+                    
+                }
+            }
 
         }
     }
