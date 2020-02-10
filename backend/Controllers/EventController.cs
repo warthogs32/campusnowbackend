@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using backend.Repositories;
+using backend.Models;
 
 namespace backend.Controllers
 {
@@ -17,14 +19,17 @@ namespace backend.Controllers
             return new string[] { "value1", "value2" };
         }
 
+        [HttpGet]
         [Route("getEventById/")]
-        public string GetEventById(int id)
+        public EventModel GetEventById(int id)
         {
-            return id.ToString();
+            EventRepository eventRepo = new EventRepository();
+            EventModel retrievedEvent = eventRepo.GetEventById(id);
+            return retrievedEvent;
         }
 
-        // POST: api/Event
-        public void Post([FromBody]string value)
+        [HttpPost]
+        public void PostNewEvent([FromBody]string value)
         {
         }
 
