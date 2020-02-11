@@ -12,6 +12,8 @@ namespace backend.Controllers
     [RoutePrefix("Event")]
     public class EventController : ApiController
     {
+        private EventRepository _eventRepo = new EventRepository();
+
         [Route("getAllEvents/")]
         [HttpGet]
         public IEnumerable<string> GetAllEvents()
@@ -23,8 +25,7 @@ namespace backend.Controllers
         [Route("getEventById/")]
         public EventModel GetEventById(int id)
         {
-            EventRepository eventRepo = new EventRepository();
-            EventModel retrievedEvent = eventRepo.GetEventById(id);
+            EventModel retrievedEvent = _eventRepo.GetEventById(id);
             return retrievedEvent;
         }
 
