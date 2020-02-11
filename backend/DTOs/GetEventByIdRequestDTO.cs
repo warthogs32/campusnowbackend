@@ -5,7 +5,7 @@ using System.Web;
 
 namespace backend.DTOs
 {
-    public class GetEventsResponseDTO
+    public class GetEventByIdRequestDTO
     {
     }
 }

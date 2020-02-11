@@ -93,7 +93,17 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Components\Location.cs" />
     <Compile Include="Controllers\EventController.cs" />
-    <Compile Include="DTOs\GetEventsResponseDTO.cs" />
+    <Compile Include="DTOs\DeleteEventRequestDTO.cs" />
+    <Compile Include="DTOs\DeleteEventResponseDTO.cs" />
+    <Compile Include="DTOs\EventRecordDTO.cs" />
+    <Compile Include="DTOs\GetAllEventsRequestDTO.cs" />
+    <Compile Include="DTOs\GetAllEventsResponseDTO.cs" />
+    <Compile Include="DTOs\GetEventByIdRequestDTO.cs" />
+    <Compile Include="DTOs\GetEventByIdResponseDTO.cs" />
+    <Compile Include="DTOs\PostNewEventRequestDTO.cs" />
+    <Compile Include="DTOs\PostNewEventResponseDTO.cs" />
+    <Compile Include="DTOs\UpdateEventRequestDTO.cs" />
+    <Compile Include="DTOs\UpdateEventResponseDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
