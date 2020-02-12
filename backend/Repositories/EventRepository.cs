@@ -5,14 +5,15 @@ using System.Web;
 using backend.Models;
 using System.Data.SqlClient;
 using System.Configuration;
+using backend.DTOs;
 
 namespace backend.Repositories
 {
     public class EventRepository
     {
-        public EventModel GetEventById(int eventId)
+        public GetEventByIdResponseDTO GetEventById(int eventId)
         {
-            EventModel retrievedEvent = new EventModel();
+            GetEventByIdResponseDTO retrievedEvent = new GetEventByIdResponseDTO();
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
             {
                 conn.Open();
@@ -24,9 +25,9 @@ namespace backend.Repositories
                     {
                         if (reader.Read())
                         {
-                            retrievedEvent = new EventModel()
+                            retrievedEvent = new GetEventByIdResponseDTO()
                             {
-                                ListingId = Int32.Parse(reader["ListingId"].ToString())
+                                //ListingId = Int32.Parse(reader["ListingId"].ToString())
                             };
                         }
                     }
