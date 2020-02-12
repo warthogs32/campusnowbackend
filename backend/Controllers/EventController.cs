@@ -9,7 +9,7 @@ using backend.DTOs;
 
 namespace backend.Controllers
 {
-    [RoutePrefix("Event")]
+    [RoutePrefix("api/event")]
     public class EventController : ApiController
     {
         private EventRepository _eventRepo = new EventRepository();
