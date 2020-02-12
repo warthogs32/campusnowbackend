@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using backend.Models;
 using System.Data.SqlClient;
 using System.Configuration;
 using backend.DTOs;
@@ -36,20 +35,29 @@ namespace backend.Repositories
             return retrievedEvent;
         }
 
+        public GetAllEventsResponseDTO GetAllEvents()
+        {
+            GetAllEventsResponseDTO response = new GetAllEventsResponseDTO();
+
+
+
+            return response;
+        }
+
         public PostNewEventResponseDTO PostNewEvent(PostNewEventRequestDTO newEvent)
         {
-            EventModel newEvent = new EventModel();
+            PostNewEventResponseDTO response = new PostNewEventResponseDTO();
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
             {
                 conn.Open();
-                string getEventQuery = "select * from cn.Events where ListingId = @eventId";
+                string getEventQuery = "";
                 using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
                 {
-                    cmd.Parameters.AddWithValue("@eventId", eventId);
+                    //cmd.Parameters.AddWithValue();
                     
                 }
             }
-
+            return response;
         }
     }
 }

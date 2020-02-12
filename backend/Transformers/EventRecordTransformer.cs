@@ -7,5 +7,6 @@ namespace backend.Transformers
 {
     public class EventRecordTransformer
     {
+        //transform EventRcordDTO to GetEventIdResponseDTO
     }
 }

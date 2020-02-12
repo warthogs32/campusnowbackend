@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using backend.Repositories;
+using backend.DTOs;
 
 namespace backend.Controllers
 {
@@ -15,31 +16,37 @@ namespace backend.Controllers
 
         [Route("getAllEvents/")]
         [HttpGet]
-        public IEnumerable<string> GetAllEvents()
+        public IHttpActionResult GetAllEvents()
         {
-            return new string[] { "value1", "value2" };
+            GetAllEventsResponseDTO allEvents = _eventRepo.GetAllEvents();
+            return Ok(allEvents);
         }
 
         [HttpGet]
         [Route("getEventById/")]
-        public IHttpActionResult GetEventById(int id)
+        public IHttpActionResult GetEventById([FromBody]GetEventByIdRequestDTO eventIdRequest)
         {
-            EventModel retrievedEvent = _eventRepo.GetEventById(id);
-            return retrievedEvent;
+            GetEventByIdResponseDTO retrievedEvent = _eventRepo.GetEventById(eventIdRequest);
+            return Ok(retrievedEvent);
         }
 
         [HttpPost]
-        public void PostNewEvent([FromBody]string value)
+        [Route("postNewEvent/")]
+        public IHttpActionResult PostNewEvent([FromBody]PostNewEventRequestDTO newEvent)
+        {
+            PostNewEventResponseDTO newEventResponse = _eventRepo.PostNewEvent(newEvent);
+            return Ok(newEventResponse);
+        }
+
+        [HttpPut]
+        [Route("updateEvent/")]
+        public void Put([FromBody]UpdateEventRequestDTO updateEventREquest)
         {
         }
 
-        // PUT: api/Event/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/Event/5
-        public void Delete(int id)
+        [HttpDelete]
+        [Route("deleteEvent/")]
+        public void Delete([FromBody]DeleteEventRequestDTO deleteEventRequest)
         {
         }
     }
