@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using backend.Repositories;
-using backend.Models;
 
 namespace backend.Controllers
 {
@@ -23,7 +22,7 @@ namespace backend.Controllers
 
         [HttpGet]
         [Route("getEventById/")]
-        public EventModel GetEventById(int id)
+        public IHttpActionResult GetEventById(int id)
         {
             EventModel retrievedEvent = _eventRepo.GetEventById(id);
             return retrievedEvent;

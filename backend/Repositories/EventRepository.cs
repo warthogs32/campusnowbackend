@@ -36,7 +36,7 @@ namespace backend.Repositories
             return retrievedEvent;
         }
 
-        public bool PostNewEvent()
+        public PostNewEventResponseDTO PostNewEvent(PostNewEventRequestDTO newEvent)
         {
             EventModel newEvent = new EventModel();
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
