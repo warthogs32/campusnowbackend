@@ -11,7 +11,7 @@ namespace backend.Repositories
 {
     public class EventRepository
     {
-        public GetEventByIdResponseDTO GetEventById(int eventId)
+        public GetEventByIdResponseDTO GetEventById(GetEventByIdRequestDTO eventId)
         {
             GetEventByIdResponseDTO retrievedEvent = new GetEventByIdResponseDTO();
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
