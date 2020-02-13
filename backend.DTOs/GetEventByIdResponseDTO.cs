@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace backend.DTOs
 {
-    public class GetAllEventsRequestDTO
+    public class GetEventByIdResponseDTO
     {
+        public EventRecordDTO EventRecord { get; set; }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace backend.DTOs
 {
-    public class PostNewEventRequestDTO
+    public class PostNewEventResponseDTO
     {
+        public bool status { get; set; }
     }
 }

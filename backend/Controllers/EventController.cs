@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using backend.Repositories;
 using backend.DTOs;
+using backend.Models;
+using backend.Transformers;
 
 namespace backend.Controllers
 {
@@ -14,28 +16,53 @@ namespace backend.Controllers
     {
         private EventRepository _eventRepo = new EventRepository();
 
+        /// <summary>
+        /// Retrieves all events.
+        /// </summary>
+        /// <returns>List of all event records.</returns>
         [Route("getAllEvents/")]
         [HttpGet]
-        public IHttpActionResult GetAllEvents()
+        public GetAllEventsResponseDTO GetAllEvents()
         {
-            GetAllEventsResponseDTO allEvents = _eventRepo.GetAllEvents();
-            return Ok(allEvents);
+            List<EventRecord> allEvents = _eventRepo.GetAllEvents();
+            return new GetAllEventsResponseDTO()
+            {
+                EventRecords = allEvents.Select(x => EventRecordTransformer.Transform(x)).ToList()
+            };
         }
 
+        /// <summary>
+        /// Retrieves event given its corresponding ID.
+        /// </summary>
+        /// <param name="eventIdRequest"></param>
+        /// <returns>Event record with the given ID.</returns>
         [HttpGet]
         [Route("getEventById/")]
-        public IHttpActionResult GetEventById([FromBody]GetEventByIdRequestDTO eventIdRequest)
+        public GetEventByIdResponseDTO GetEventById([FromBody]GetEventByIdRequestDTO eventIdRequest)
         {
-            GetEventByIdResponseDTO retrievedEvent = _eventRepo.GetEventById(eventIdRequest);
-            return Ok(retrievedEvent);
+            int eventId = eventIdRequest.EventId;
+            EventRecord retrievedEvent = _eventRepo.GetEventById(eventId);
+            EventRecordDTO retrievedEventDTO = EventRecordTransformer.Transform(retrievedEvent);
+            return new GetEventByIdResponseDTO()
+            {
+                EventRecord = retrievedEventDTO
+            };
         }
 
+        /// <summary>
+        /// Posts a new event.
+        /// </summary>
+        /// <param name="newEvent"></param>
+        /// <returns>True for success, false for post failure.</returns>
         [HttpPost]
         [Route("postNewEvent/")]
-        public IHttpActionResult PostNewEvent([FromBody]PostNewEventRequestDTO newEvent)
+        public PostNewEventResponseDTO PostNewEvent([FromBody]PostNewEventRequestDTO newEvent)
         {
-            PostNewEventResponseDTO newEventResponse = _eventRepo.PostNewEvent(newEvent);
-            return Ok(newEventResponse);
+            bool newEventResponse = _eventRepo.PostNewEvent(EventRecordTransformer.Transform(newEvent.NewEvent));
+            return new PostNewEventResponseDTO
+            {
+                status = newEventResponse
+            };
         }
 
         [HttpPut]

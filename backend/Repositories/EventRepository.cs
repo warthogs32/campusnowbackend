@@ -5,14 +5,15 @@ using System.Web;
 using System.Data.SqlClient;
 using System.Configuration;
 using backend.DTOs;
+using backend.Models;
 
 namespace backend.Repositories
 {
     public class EventRepository
     {
-        public GetEventByIdResponseDTO GetEventById(GetEventByIdRequestDTO eventId)
+        public EventRecord GetEventById(int eventId)
         {
-            GetEventByIdResponseDTO retrievedEvent = new GetEventByIdResponseDTO();
+            EventRecord retrievedEvent = new EventRecord();
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
             {
                 conn.Open();
@@ -24,7 +25,7 @@ namespace backend.Repositories
                     {
                         if (reader.Read())
                         {
-                            retrievedEvent = new GetEventByIdResponseDTO()
+                            retrievedEvent = new EventRecord()
                             {
                                 //ListingId = Int32.Parse(reader["ListingId"].ToString())
                             };
@@ -35,29 +36,33 @@ namespace backend.Repositories
             return retrievedEvent;
         }
 
-        public GetAllEventsResponseDTO GetAllEvents()
+        public List<EventRecord> GetAllEvents()
         {
-            GetAllEventsResponseDTO response = new GetAllEventsResponseDTO();
-
-
+            List<EventRecord> response = new List<EventRecord>();
 
             return response;
         }
 
-        public PostNewEventResponseDTO PostNewEvent(PostNewEventRequestDTO newEvent)
+        public bool PostNewEvent(EventRecord newEvent)
         {
-            PostNewEventResponseDTO response = new PostNewEventResponseDTO();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
+            try
             {
-                conn.Open();
-                string getEventQuery = "";
-                using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
+                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
                 {
-                    //cmd.Parameters.AddWithValue();
-                    
+                    conn.Open();
+                    string getEventQuery = "";
+                    using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
+                    {
+                        //cmd.Parameters.AddWithValue();
+
+                    }
                 }
             }
-            return response;
+            catch(SqlException e)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
