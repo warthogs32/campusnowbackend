@@ -20,7 +20,17 @@ namespace backend.Transformers
             {
                 return null;
             }
-            var eventRecord = new EventRecord();
+            var eventRecord = new EventRecord()
+            { 
+                ListingId = dto.ListingId,
+                UserId = dto.UserId,
+                Title = dto.Title,
+                Description = dto.Description,
+                StartTime = dto.StartTime,
+                EndTime = dto.EndTime,
+                LocX = dto.LocX,
+                LocY = dto.LocY
+            };
             return eventRecord;
         }
 
@@ -36,7 +46,17 @@ namespace backend.Transformers
                 return null;
             }
 
-            var dto = new EventRecordDTO();
+            var dto = new EventRecordDTO() 
+            {
+                ListingId = eventRecord.ListingId,
+                UserId = eventRecord.UserId,
+                Title = eventRecord.Title,
+                Description = eventRecord.Description,
+                StartTime = eventRecord.StartTime,
+                EndTime = eventRecord.EndTime,
+                LocX = eventRecord.LocX,
+                LocY = eventRecord.LocY
+            };
             return dto;
         }
     }

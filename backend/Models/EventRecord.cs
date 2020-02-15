@@ -14,6 +14,13 @@ namespace backend.Models
             set => _listingId = value;
         }
 
+        private int _userId;
+        public int UserId
+        {
+            get => _userId;
+            set => _userId = value;
+        }
+
         private string _title;
         public string Title
         {
@@ -66,13 +73,6 @@ namespace backend.Models
                     _locY = value;
                 }
             }
-        }
-
-        private int _userId;
-        public int UserId
-        {
-            get => _userId;
-            set => _userId = value;
         }
 
     }
