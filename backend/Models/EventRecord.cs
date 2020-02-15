@@ -7,59 +7,73 @@ namespace backend.Models
 {
     public class EventRecord
     {
-        public int id { get; }
-        public String title { get; }
-        public String description { get; }
-        public DateTime startTime { get; }
-        public DateTime endTime { get; }
-        public float locX { get; }
-        public float locY { get; }
-        public int userId { get; }
-
-        public EventRecord(SQLDataReader reader)
+        private int _listingId;
+        public int ListingId 
         {
-            this.id = Int32.Parse(reader["ListingId"].ToString());
-            this.title = reader["Title"].ToString();
-            this.description = reader["Description"].ToString();
-            this.startTime = DateTime.Parse(reader["StartTime"].ToString());
-            this.endTime = DateTime.Parse(reader["EndTime"].toString());
-            this.LocX = float.Parse(reader["LocX"].ToString());
-            this.LocY = float.Parse(reader["locY"].ToString());
-            this.userId = Int32.Parse(reader["UserId"].ToString());
+            get => _listingId;
+            set => _listingId = value;
         }
 
-        public EventRecord(EventRecordDTO dto)
+        private string _title;
+        public string Title
         {
-            this.id = dto.id;
-            this.title = dto.title;
-            this.description = dto.description;
-            this.startTime = dto.startTime;
-            this.endTime = dto.endTime;
-            this.locX = dto.locX;
-            this.locY = dto.locY;
-            this.userId = dto.userId;
+            get => _title;
+            set => _title = value;
         }
 
-        private int LocX
+        private string _description;
+        public string Description
         {
+            get => _description;
+            set => _description = value;
+        }
+
+        private DateTime _startTime;
+        public DateTime StartTime
+        {
+            get => _startTime;
+            set => _startTime = value;
+        }
+
+        private DateTime _endTime;
+        public DateTime EndTime
+        {
+            get => _endTime;
+            set => _endTime = value;
+        }
+
+        private double _locX;
+        public double LocX
+        {
+            get => _locX;
             set
             {
                 if (value >= -180.0 && value <= 180.0)
-                    locX = LocX;
-                else
-                    locX = 0;
+                {
+                    _locX = value;
+                }
             }
         }
 
-        private int LocY
+        private double _locY;
+        public double LocY
         {
+            get => _locY;
             set
             {
                 if (value >= -180.0 && value <= 180.0)
-                    locY = LocY;
-                else
-                    locY = 0;
+                {
+                    _locY = value;
+                }
             }
         }
+
+        private int _userId;
+        public int UserId
+        {
+            get => _userId;
+            set => _userId = value;
+        }
+
     }
 }
