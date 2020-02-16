@@ -14,8 +14,9 @@ namespace backend.Repositories
         public EventRecord GetEventById(int eventId)
         {
             EventRecord retrievedEvent = new EventRecord();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
+            using (SqlConnection conn = new SqlConnection())
             {
+                conn.ConnectionString = ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString;
                 conn.Open();
                 string getEventQuery = "select * from cn.Events where ListingId = @eventId";
                 using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))

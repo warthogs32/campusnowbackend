@@ -26,8 +26,8 @@ namespace backend.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("\"Data Source=jason-e6530;Initial Catalog=307_maps;User ID=2202_csc307g3;Password=" +
-            "32warthogs29\"")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=atascadero.jj-jj.org,3184;Initial Catalog=307_maps;User ID=2202_csc30" +
+            "7g3;Password=32warthogs29;")]
         public string mapsdb {
             get {
                 return ((string)(this["mapsdb"]));

@@ -50,8 +50,8 @@ namespace backend
                 JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
                 TokenValidationParameters validationParameters = new TokenValidationParameters()
                 {
-                    ValidAudience = "http://localhost:50191",
-                    ValidIssuer = "http://localhost:50191",
+                    ValidAudience = "http://localhost:56924",
+                    ValidIssuer = "http://localhost:56924",
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     LifetimeValidator = this.LifetimeValidator,

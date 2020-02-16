@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using backend.Repositories;
 using backend.DTOs;
+using System.Web.Http.Description;
 using backend.Models;
 using backend.Transformers;
 
@@ -21,6 +22,7 @@ namespace backend.Controllers
         /// </summary>
         /// <returns>List of all event records.</returns>
         [Route("getAllEvents/")]
+        [ResponseType(typeof(GetAllEventsResponseDTO))]
         [HttpGet]
         public GetAllEventsResponseDTO GetAllEvents()
         {
@@ -37,8 +39,9 @@ namespace backend.Controllers
         /// <param name="eventIdRequest"></param>
         /// <returns>Event record with the given ID.</returns>
         [HttpGet]
+        [ResponseType(typeof(GetEventByIdResponseDTO))]
         [Route("getEventById/")]
-        public GetEventByIdResponseDTO GetEventById([FromBody]GetEventByIdRequestDTO eventIdRequest)
+        public GetEventByIdResponseDTO GetEventById([FromUri]GetEventByIdRequestDTO eventIdRequest)
         {
             int eventId = eventIdRequest.EventId;
             EventRecord retrievedEvent = _eventRepo.GetEventById(eventId);
@@ -55,6 +58,7 @@ namespace backend.Controllers
         /// <param name="newEvent"></param>
         /// <returns>True for success, false for post failure.</returns>
         [HttpPost]
+        [ResponseType(typeof(PostNewEventResponseDTO))]
         [Route("postNewEvent/")]
         public PostNewEventResponseDTO PostNewEvent([FromBody]PostNewEventRequestDTO newEvent)
         {
