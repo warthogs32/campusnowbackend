@@ -14,8 +14,10 @@ using System.Web.Http;
 
 namespace backend.Controllers
 {
+    [RoutePrefix("api/login")]
     public class LoginController : ApiController
     {
+        [Route("authenticate/")]
         [HttpPost]
         public IHttpActionResult Authenticate([FromBody] LoginRequestDTO login)
         {

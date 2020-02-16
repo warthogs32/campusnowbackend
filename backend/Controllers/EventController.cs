@@ -39,6 +39,7 @@ namespace backend.Controllers
         /// <param name="eventIdRequest"></param>
         /// <returns>Event record with the given ID.</returns>
         [HttpGet]
+        [Authorize]
         [ResponseType(typeof(GetEventByIdResponseDTO))]
         [Route("getEventById/")]
         public GetEventByIdResponseDTO GetEventById([FromUri]GetEventByIdRequestDTO eventIdRequest)
