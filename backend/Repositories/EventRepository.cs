@@ -27,7 +27,14 @@ namespace backend.Repositories
                         {
                             retrievedEvent = new EventRecord()
                             {
-                                //ListingId = Int32.Parse(reader["ListingId"].ToString())
+                                ListingId = Int32.Parse(reader["ListingId"].ToString()),
+                                Title = reader["Title"].ToString(),
+                                Description = reader["Description"].ToString(),
+                                StartTime = DateTime.Parse(reader["StartTime"].ToString()),
+                                EndTime = DateTime.Parse(reader["EndTime"].ToString()),
+                                LocX = float.Parse(reader["LocX"].ToString()),
+                                LocY = float.Parse(reader["LocY"].ToString()),
+                                UserId = Int32.Parse(reader["UserId"].ToString())
                             };
                         }
                     }
