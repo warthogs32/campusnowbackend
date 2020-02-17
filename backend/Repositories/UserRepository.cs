@@ -24,7 +24,7 @@ namespace backend.Repositories
                         cmd.Parameters.AddWithValue("@Password", newUser.Password);
                         cmd.Parameters.AddWithValue("@FirstName", newUser.FirstName);
                         cmd.Parameters.AddWithValue("@LastName", newUser.LastName);
-                        cmd.Parameters.AddWithValue("@JoinDate", newUser.JoinDate);
+                        cmd.Parameters.AddWithValue("@JoinDate", DateTime.Now);
                         cmd.ExecuteNonQuery();
                     }
                 }

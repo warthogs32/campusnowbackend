@@ -109,33 +109,40 @@ namespace backend.Repositories
 
         public bool UpdateEvent(EventRecord updated)
         {
-            try
+            if (updated.UserId == LoginRepository.CurrentUser.UserId)
             {
-                using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
+                try
                 {
-                    conn.Open();
-                    String updateEventQuery = "update cn.Events " +
-                        "set Title = @title, Description = @description, StartTime = @start, EndTime = @end, LocX = @LocX, LocY = @LocY " +
-                        "where ListingId = @id";
-                    using (SqlCommand cmd = new SqlCommand(updateEventQuery, conn))
+                    using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
                     {
-                        cmd.Parameters.AddWithValue("@title", updated.Title);
-                        cmd.Parameters.AddWithValue("@description", updated.Description);
-                        cmd.Parameters.AddWithValue("@start", updated.StartTime);
-                        cmd.Parameters.AddWithValue("@end", updated.EndTime);
-                        cmd.Parameters.AddWithValue("@LocX", updated.LocX);
-                        cmd.Parameters.AddWithValue("@LocY", updated.LocY);
-                        cmd.Parameters.AddWithValue("@id", updated.ListingId);
+                        conn.Open();
+                        String updateEventQuery = @"update cn.Events
+                        set Title = @title, Description = @description, StartTime = @start, EndTime = @end, LocX = @LocX, LocY = @LocY
+                        where ListingId = @id;";
+                        using (SqlCommand cmd = new SqlCommand(updateEventQuery, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@title", updated.Title);
+                            cmd.Parameters.AddWithValue("@description", updated.Description);
+                            cmd.Parameters.AddWithValue("@start", updated.StartTime);
+                            cmd.Parameters.AddWithValue("@end", updated.EndTime);
+                            cmd.Parameters.AddWithValue("@LocX", updated.LocX);
+                            cmd.Parameters.AddWithValue("@LocY", updated.LocY);
+                            cmd.Parameters.AddWithValue("@id", updated.ListingId);
 
-                        cmd.ExecuteNonQuery();
+                            cmd.ExecuteNonQuery();
+                        }
                     }
                 }
+                catch (SqlException e)
+                {
+                    return false;
+                }
+                return true;
             }
-            catch (SqlException e)
+            else 
             {
                 return false;
             }
-            return true;
         }
 
         public bool DeleteEvent(int eventId)

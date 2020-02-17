@@ -6,5 +6,6 @@ namespace backend.DTOs
 {
     public class DeleteEventRequestDTO
     {
+        public int EventIdToDelete { get; set; }
     }
 }

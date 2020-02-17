@@ -6,5 +6,6 @@ namespace backend.DTOs
 {
     public class DeleteEventResponseDTO
     {
+        public bool Status { get; set; }
     }
 }
