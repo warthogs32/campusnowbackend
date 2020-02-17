@@ -14,8 +14,9 @@ namespace backend.Repositories
         public EventRecord GetEventById(int eventId)
         {
             EventRecord retrievedEvent = new EventRecord();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
+            using (SqlConnection conn = new SqlConnection())
             {
+                conn.ConnectionString = backend.Properties.Resources.sqlconnection;
                 conn.Open();
                 string getEventQuery = "select * from cn.Events where ListingId = @eventId";
                 using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
@@ -47,7 +48,7 @@ namespace backend.Repositories
         {
             List<EventRecord> response = new List<EventRecord>();
             EventRecord retrievedEvent;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
+            using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
             {
                 conn.Open();
                 string getEventsQuery = "select * from cn.Events";
@@ -80,19 +81,19 @@ namespace backend.Repositories
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
+                using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
                 {
                     conn.Open();
-                    string postEventQuery = "insert into cn.Events (Title, Description, StartTime, EndTime, LocX, Locy, UserId) values" +
-                        "'@title', '@description', '@start', '@end', @locX, @locY, @userId);";
-                    using (SqlCommand cmd = new SqlCommand(postEventQuery, conn))
+                    string getEventQuery = @"insert into cn.Events (Title, Description, StartTime, EndTime, LocX, Locy, UserId) values
+                        (@title, @description, @start, @end, @locX, @locY, @userId);";
+                    using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
                     {
                         cmd.Parameters.AddWithValue("@title", newEvent.Title);
                         cmd.Parameters.AddWithValue("@description", newEvent.Description);
                         cmd.Parameters.AddWithValue("@start", newEvent.StartTime);
                         cmd.Parameters.AddWithValue("@end", newEvent.EndTime);
                         cmd.Parameters.AddWithValue("@locX", newEvent.LocX);
-                        cmd.Parameters.AddWithValue("@locY", newEvent.LoxY);
+                        cmd.Parameters.AddWithValue("@locY", newEvent.LocY);
                         cmd.Parameters.AddWithValue("@userId", newEvent.UserId);
 
                         cmd.ExecuteNonQuery();
@@ -110,11 +111,11 @@ namespace backend.Repositories
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
+                using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
                 {
                     conn.Open();
                     String updateEventQuery = "update cn.Events " +
-                        "set Title = '@title', Description = '@description', StartTime = '@start', EndTime = '@end', LocX = @LocX, LocY = @LocY " +
+                        "set Title = @title, Description = @description, StartTime = @start, EndTime = @end, LocX = @LocX, LocY = @LocY " +
                         "where ListingId = @id";
                     using (SqlCommand cmd = new SqlCommand(postEventQuery, conn))
                     {
