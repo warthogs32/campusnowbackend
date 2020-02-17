@@ -6,5 +6,6 @@ namespace backend.DTOs
 {
     public class UpdateEventRequestDTO
     {
+        public EventRecordDTO UpdatedEvent { get; set; }
     }
 }

@@ -6,5 +6,6 @@ namespace backend.DTOs
 {
     public class UpdateEventResponseDTO
     {
+        public bool status { get; set; }
     }
 }

@@ -107,7 +107,7 @@ namespace backend.Repositories
             return true;
         }
 
-        public boolean UpdateEvent(EventRecord updated)
+        public bool UpdateEvent(EventRecord updated)
         {
             try
             {
@@ -117,14 +117,14 @@ namespace backend.Repositories
                     String updateEventQuery = "update cn.Events " +
                         "set Title = @title, Description = @description, StartTime = @start, EndTime = @end, LocX = @LocX, LocY = @LocY " +
                         "where ListingId = @id";
-                    using (SqlCommand cmd = new SqlCommand(postEventQuery, conn))
+                    using (SqlCommand cmd = new SqlCommand(updateEventQuery, conn))
                     {
                         cmd.Parameters.AddWithValue("@title", updated.Title);
                         cmd.Parameters.AddWithValue("@description", updated.Description);
                         cmd.Parameters.AddWithValue("@start", updated.StartTime);
                         cmd.Parameters.AddWithValue("@end", updated.EndTime);
                         cmd.Parameters.AddWithValue("@LocX", updated.LocX);
-                        cmd.Parameters.AddWithValue("@LocY", updated.LoxY);
+                        cmd.Parameters.AddWithValue("@LocY", updated.LocY);
                         cmd.Parameters.AddWithValue("@id", updated.ListingId);
 
                         cmd.ExecuteNonQuery();
@@ -138,7 +138,7 @@ namespace backend.Repositories
             return true;
         }
 
-        public boolean DeleteEvent(int eventId)
+        public bool DeleteEvent(int eventId)
         {
             try
             {

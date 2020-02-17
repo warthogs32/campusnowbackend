@@ -71,15 +71,22 @@ namespace backend.Controllers
         }
 
         [HttpPut]
+        [ResponseType(typeof(UpdateEventResponseDTO))]
         [Route("updateEvent/")]
-        public void Put([FromBody]UpdateEventRequestDTO updateEventREquest)
+        public UpdateEventResponseDTO Put([FromBody]UpdateEventRequestDTO updateEventRequest)
         {
+            bool updateEventResponse = _eventRepo.UpdateEvent(EventRecordTransformer.Transform(updateEventRequest.UpdatedEvent));
+            return new UpdateEventResponseDTO
+            {
+                status = updateEventResponse
+            };
         }
 
         [HttpDelete]
         [Route("deleteEvent/")]
         public void Delete([FromBody]DeleteEventRequestDTO deleteEventRequest)
         {
+            
         }
     }
 }
