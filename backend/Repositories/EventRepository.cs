@@ -27,7 +27,14 @@ namespace backend.Repositories
                         {
                             retrievedEvent = new EventRecord()
                             {
-                                //ListingId = Int32.Parse(reader["ListingId"].ToString())
+                                ListingId = Int32.Parse(reader["ListingId"].ToString()),
+                                Title = reader["Title"].ToString(),
+                                Description = reader["Description"].ToString(),
+                                StartTime = DateTime.Parse(reader["StartTime"].ToString()),
+                                EndTime = DateTime.Parse(reader["EndTime"].ToString()),
+                                LocX = float.Parse(reader["LocX"].ToString()),
+                                LocY = float.Parse(reader["LocY"].ToString()),
+                                UserId = Int32.Parse(reader["UserId"].ToString())
                             };
                         }
                     }
@@ -39,7 +46,33 @@ namespace backend.Repositories
         public List<EventRecord> GetAllEvents()
         {
             List<EventRecord> response = new List<EventRecord>();
-
+            EventRecord retrievedEvent;
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
+            {
+                conn.Open();
+                string getEventQuery = "select * from cn.Events";
+                using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            retrievedEvent = new EventRecord()
+                            {
+                                ListingId = Int32.Parse(reader["ListingId"].ToString()),
+                                Title = reader["Title"].ToString(),
+                                Description = reader["Description"].ToString(),
+                                StartTime = DateTime.Parse(reader["StartTime"].ToString()),
+                                EndTime = DateTime.Parse(reader["EndTime"].ToString()),
+                                LocX = float.Parse(reader["LocX"].ToString()),
+                                LocY = float.Parse(reader["LocY"].ToString()),
+                                UserId = Int32.Parse(reader["UserId"].ToString())
+                            };
+                            response.Add(retrievedEvent);
+                        }
+                    }
+                }
+            }
             return response;
         }
 
@@ -50,11 +83,19 @@ namespace backend.Repositories
                 using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
                 {
                     conn.Open();
-                    string getEventQuery = "";
+                    string getEventQuery = "insert into cn.Events (Title, Description, StartTime, EndTime, LocX, Locy, UserId) values" +
+                        "'@title', '@description', '@start', '@end', @locX, @locY, @userId);";
                     using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
                     {
-                        //cmd.Parameters.AddWithValue();
+                        cmd.Parameters.AddWithValue("@title", newEvent.Title);
+                        cmd.Parameters.AddWithValue("@description", newEvent.Description);
+                        cmd.Parameters.AddWithValue("@start", newEvent.StartTime);
+                        cmd.Parameters.AddWithValue("@end", newEvent.EndTime);
+                        cmd.Parameters.AddWithValue("@locX", newEvent.LocX);
+                        cmd.Parameters.AddWithValue("@locY", newEvent.LoxY);
+                        cmd.Parameters.AddWithValue("@userId", newEvent.UserId);
 
+                        cmd.ExecuteNonQuery();
                     }
                 }
             }
