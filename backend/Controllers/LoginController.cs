@@ -14,7 +14,7 @@ using System.Web.Http;
 
 namespace backend.Controllers
 {
-    [RoutePrefix("api/login")]
+    [RoutePrefix("user/login")]
     public class LoginController : ApiController
     {
         [Route("authenticate/")]

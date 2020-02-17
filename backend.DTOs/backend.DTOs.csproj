@@ -52,8 +52,11 @@
     <Compile Include="LoginResponseDTO.cs" />
     <Compile Include="PostNewEventRequestDTO.cs" />
     <Compile Include="PostNewEventResponseDTO.cs" />
+    <Compile Include="PostNewUserRequestDTO.cs" />
+    <Compile Include="PostNewUserResponseDTO.cs" />
     <Compile Include="UpdateEventRequestDTO.cs" />
     <Compile Include="UpdateEventResponseDTO.cs" />
+    <Compile Include="UserRecordDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
