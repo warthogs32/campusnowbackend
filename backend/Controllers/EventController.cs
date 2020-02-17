@@ -39,7 +39,6 @@ namespace backend.Controllers
         /// <param name="eventIdRequest"></param>
         /// <returns>Event record with the given ID.</returns>
         [HttpGet]
-        [Authorize]
         [ResponseType(typeof(GetEventByIdResponseDTO))]
         [Route("getEventById/")]
         public GetEventByIdResponseDTO GetEventById([FromUri]GetEventByIdRequestDTO eventIdRequest)
@@ -59,6 +58,7 @@ namespace backend.Controllers
         /// <param name="newEvent"></param>
         /// <returns>True for success, false for post failure.</returns>
         [HttpPost]
+        [Authorize]
         [ResponseType(typeof(PostNewEventResponseDTO))]
         [Route("postNewEvent/")]
         public PostNewEventResponseDTO PostNewEvent([FromBody]PostNewEventRequestDTO newEvent)
@@ -70,7 +70,13 @@ namespace backend.Controllers
             };
         }
 
+        /// <summary>
+        /// Modifies an existing event.
+        /// </summary>
+        /// <param name="updateEventRequest"></param>
+        /// <returns>True for success, false for update failure.</returns>
         [HttpPut]
+        [Authorize]
         [ResponseType(typeof(UpdateEventResponseDTO))]
         [Route("updateEvent/")]
         public UpdateEventResponseDTO Put([FromBody]UpdateEventRequestDTO updateEventRequest)
@@ -82,7 +88,14 @@ namespace backend.Controllers
             };
         }
 
+        /// <summary>
+        /// Deletes an event.
+        /// </summary>
+        /// <param name="deleteEventRequest"></param>
+        /// <returns>True for success, false for delete failure.</returns>
         [HttpDelete]
+        [Authorize]
+        [ResponseType(typeof(DeleteEventResponseDTO))]
         [Route("deleteEvent/")]
         public DeleteEventResponseDTO Delete([FromBody]DeleteEventRequestDTO deleteEventRequest)
         {
