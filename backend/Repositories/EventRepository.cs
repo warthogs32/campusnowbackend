@@ -16,7 +16,6 @@ namespace backend.Repositories
             EventRecord retrievedEvent = new EventRecord();
             using (SqlConnection conn = new SqlConnection())
             {
-                //conn.ConnectionString = ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString;
                 conn.ConnectionString = backend.Properties.Resources.sqlconnection;
                 conn.Open();
                 string getEventQuery = "select * from cn.Events where ListingId = @eventId";
@@ -52,8 +51,8 @@ namespace backend.Repositories
             using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
             {
                 conn.Open();
-                string getEventQuery = "select * from cn.Events";
-                using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
+                string getEventsQuery = "select * from cn.Events";
+                using (SqlCommand cmd = new SqlCommand(getEventsQuery, conn))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -106,6 +105,59 @@ namespace backend.Repositories
                 return false;
             }
             return true;
+        }
+
+        public boolean UpdateEvent(EventRecord updated)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
+                {
+                    conn.Open();
+                    String updateEventQuery = "update cn.Events " +
+                        "set Title = @title, Description = @description, StartTime = @start, EndTime = @end, LocX = @LocX, LocY = @LocY " +
+                        "where ListingId = @id";
+                    using (SqlCommand cmd = new SqlCommand(postEventQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@title", updated.Title);
+                        cmd.Parameters.AddWithValue("@description", updated.Description);
+                        cmd.Parameters.AddWithValue("@start", updated.StartTime);
+                        cmd.Parameters.AddWithValue("@end", updated.EndTime);
+                        cmd.Parameters.AddWithValue("@LocX", updated.LocX);
+                        cmd.Parameters.AddWithValue("@LocY", updated.LoxY);
+                        cmd.Parameters.AddWithValue("@id", updated.ListingId);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public boolean DeleteEvent(int eventId)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
+                {
+                    conn.Open();
+                    string deleteEventQuery = "delete from cn.Events where ListingId = @eventId";
+                    using (SqlCommand cmd = new SqlCommand(deleteEventQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@eventId", eventId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch (SqlException e)
+            {
+                return false;
+            }
         }
     }
 }
