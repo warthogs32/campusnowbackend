@@ -14,7 +14,7 @@ namespace backend.Tests
         {
             // Arrange
             EventRepository repo = new EventRepository();
-            int eventId = 1;
+            int eventId = 5;
             String expectedEventTitle = "ExampleEvent";
             String expectedEventDescription = "New EventDescription";
 
@@ -30,11 +30,9 @@ namespace backend.Tests
         {
             // Arrange
             EventRepository repo = new EventRepository();
-            int expectedLength = 2;
+            int expectedLength = 1;
             String expectedEventTitle1 = "ExampleEvent";
-            String expectedEventTitle2 = "ExampleTitle2";
             String expectedEventDescription1 = "New EventDescription";
-            String expectedEventDescription2 = "ExampleDesc2";
 
             // Act
             List<EventRecord> records = repo.GetAllEvents();
@@ -43,8 +41,6 @@ namespace backend.Tests
             Assert.AreEqual(expectedLength, records.Count);
             Assert.AreEqual(expectedEventTitle1, records[0].Title);
             Assert.AreEqual(expectedEventDescription1, records[0].Description);
-            Assert.AreEqual(expectedEventTitle2, records[1].Title);
-            Assert.AreEqual(expectedEventDescription2, records[1].Description);
         }
 
         [TestMethod]

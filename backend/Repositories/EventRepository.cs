@@ -16,7 +16,8 @@ namespace backend.Repositories
             EventRecord retrievedEvent = new EventRecord();
             using (SqlConnection conn = new SqlConnection())
             {
-                conn.ConnectionString = ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString;
+                //conn.ConnectionString = ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString;
+                conn.ConnectionString = backend.Properties.Resources.sqlconnection;
                 conn.Open();
                 string getEventQuery = "select * from cn.Events where ListingId = @eventId";
                 using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
@@ -48,7 +49,7 @@ namespace backend.Repositories
         {
             List<EventRecord> response = new List<EventRecord>();
             EventRecord retrievedEvent;
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
+            using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
             {
                 conn.Open();
                 string getEventQuery = "select * from cn.Events";
@@ -81,7 +82,7 @@ namespace backend.Repositories
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
+                using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
                 {
                     conn.Open();
                     string getEventQuery = @"insert into cn.Events (Title, Description, StartTime, EndTime, LocX, Locy, UserId) values
