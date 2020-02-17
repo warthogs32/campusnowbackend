@@ -18,7 +18,7 @@ namespace backend.Models
 		public string UserName
 		{
 			get { return _userName; }
-			set { _userName = value; }
+			set { _userName = value.ToLower(); }
 		}
 
 		private string _password;
@@ -42,7 +42,7 @@ namespace backend.Models
 			set { _lastName = value; }
 		}
 
-		private DateTime _joinDate = DateTime.Now;
+		private DateTime _joinDate;
 		public DateTime JoinDate
 		{
 			get { return DateTime.Now; }

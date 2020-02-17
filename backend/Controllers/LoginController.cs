@@ -11,12 +11,15 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using backend.DTOs;
 using System.Web.Http;
+using backend.Repositories;
 
 namespace backend.Controllers
 {
     [RoutePrefix("user/login")]
     public class LoginController : ApiController
     {
+        private LoginRepository _loginRepo = new LoginRepository();
+
         [Route("authenticate/")]
         [HttpPost]
         public IHttpActionResult Authenticate([FromBody] LoginRequestDTO login)
@@ -28,10 +31,7 @@ namespace backend.Controllers
 
             IHttpActionResult response;
             HttpResponseMessage responseMsg = new HttpResponseMessage();
-            bool isUsernamePasswordValid = false;
-
-            if (login != null)
-                isUsernamePasswordValid = loginrequest.Password == "admin" ? true : false;
+            bool isUsernamePasswordValid = _loginRepo.IsUserLoginValid(loginrequest.Username, loginrequest.Password);
             // if credentials are valid
             if (isUsernamePasswordValid)
             {
@@ -42,6 +42,7 @@ namespace backend.Controllers
             else
             {
                 // if credentials are not valid send unauthorized status code in response
+                loginResponse.responseMsg = new HttpResponseMessage();
                 loginResponse.responseMsg.StatusCode = HttpStatusCode.Unauthorized;
                 response = ResponseMessage(loginResponse.responseMsg);
                 return response;
