@@ -42,11 +42,11 @@ namespace backend.Models
 			set { _lastName = value; }
 		}
 
-		private DateTime _joinDate;
+		private DateTime _joinDate = DateTime.Now;
 		public DateTime JoinDate
 		{
-			get { return _joinDate; }
-			set { _joinDate = value; }
+			get { return DateTime.Now; }
+			set { _joinDate = value;  }
 		}
 
 
