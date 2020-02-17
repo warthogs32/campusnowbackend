@@ -84,9 +84,13 @@ namespace backend.Controllers
 
         [HttpDelete]
         [Route("deleteEvent/")]
-        public void Delete([FromBody]DeleteEventRequestDTO deleteEventRequest)
+        public DeleteEventResponseDTO Delete([FromBody]DeleteEventRequestDTO deleteEventRequest)
         {
-            
+            bool deleteEventResponse = _eventRepo.DeleteEvent(deleteEventRequest.EventIdToDelete);
+            return new DeleteEventResponseDTO
+            {
+                Status = deleteEventResponse
+            };
         }
     }
 }

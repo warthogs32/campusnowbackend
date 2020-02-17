@@ -11,6 +11,36 @@ namespace backend.Repositories
 {
     public class EventRepository
     {
+        public bool DoesEventBelongToUser(int currentEventId)
+        {
+            bool permit;
+            using(SqlConnection conn = new SqlConnection())
+            {
+                conn.ConnectionString = backend.Properties.Resources.sqlconnection;
+                conn.Open();
+                string checkEventQuery = "select * from cn.Events where ListingId = @ListingId and UserId = @UserId";
+                using (SqlCommand cmd = new SqlCommand(checkEventQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ListingId", currentEventId);
+                    cmd.Parameters.AddWithValue("@UserId", LoginRepository.CurrentUser.UserId);
+                    using(SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if(reader.Read())
+                        {
+                            permit = Int32.Parse(reader["UserId"].ToString()) == LoginRepository.CurrentUser.UserId
+                                && Int32.Parse(reader["ListingId"].ToString()) == currentEventId;
+                        }
+                        else 
+                        {
+                            permit = false;
+                        }
+                    }
+                }
+
+            }
+            return permit;
+        }
+
         public EventRecord GetEventById(int eventId)
         {
             EventRecord retrievedEvent = new EventRecord();
@@ -94,7 +124,7 @@ namespace backend.Repositories
                         cmd.Parameters.AddWithValue("@end", newEvent.EndTime);
                         cmd.Parameters.AddWithValue("@locX", newEvent.LocX);
                         cmd.Parameters.AddWithValue("@locY", newEvent.LocY);
-                        cmd.Parameters.AddWithValue("@userId", newEvent.UserId);
+                        cmd.Parameters.AddWithValue("@userId", LoginRepository.CurrentUser.UserId);
 
                         cmd.ExecuteNonQuery();
                     }
@@ -109,7 +139,7 @@ namespace backend.Repositories
 
         public bool UpdateEvent(EventRecord updated)
         {
-            if (updated.UserId == LoginRepository.CurrentUser.UserId)
+            if (DoesEventBelongToUser(updated.ListingId))
             {
                 try
                 {
@@ -147,21 +177,28 @@ namespace backend.Repositories
 
         public bool DeleteEvent(int eventId)
         {
-            try
+            if (DoesEventBelongToUser(eventId))
             {
-                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
+                try
                 {
-                    conn.Open();
-                    string deleteEventQuery = "delete from cn.Events where ListingId = @eventId";
-                    using (SqlCommand cmd = new SqlCommand(deleteEventQuery, conn))
+                    using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
                     {
-                        cmd.Parameters.AddWithValue("@eventId", eventId);
-                        cmd.ExecuteNonQuery();
+                        conn.Open();
+                        string deleteEventQuery = "delete from cn.Events where ListingId = @eventId";
+                        using (SqlCommand cmd = new SqlCommand(deleteEventQuery, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@eventId", eventId);
+                            cmd.ExecuteNonQuery();
+                        }
                     }
+                    return true;
                 }
-                return true;
+                catch (SqlException e)
+                {
+                    return false;
+                }
             }
-            catch (SqlException e)
+            else
             {
                 return false;
             }
