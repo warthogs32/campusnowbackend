@@ -106,7 +106,7 @@ namespace backend.Repositories
             return true;
         }
 
-        public void UpdateEvent(EventRecord updated)
+        public boolean UpdateEvent(EventRecord updated)
         {
             try
             {
