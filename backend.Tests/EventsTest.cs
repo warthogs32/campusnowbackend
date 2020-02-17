@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using backend.Models;
+using backend.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace backend.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class EventsTest
     {
         [TestMethod]
         public void TestGetEventById()
@@ -19,8 +22,8 @@ namespace backend.Tests
             EventRecord record = repo.GetEventById(eventId);
 
             // Assert
-            Assert.True(expectedEventTitle == record.Title);
-            Assert.True(expectedEventDescription == record.Description);
+            Assert.AreEqual(expectedEventTitle, record.Title);
+            Assert.AreEqual(expectedEventDescription, record.Description);
         }
         [TestMethod]
         public void TestGetAllEvents()
@@ -37,11 +40,11 @@ namespace backend.Tests
             List<EventRecord> records = repo.GetAllEvents();
 
             // Assert
-            Assert.True(expectedLength == records.size());
-            Assert.True(expectedEventTitle1 == records.get(0).Title);
-            Assert.True(expectedEventDescription1 == records.get(0).Description);
-            Assert.True(expectedEventTitle2 == records.get(1).Title);
-            Assert.True(expectedEventDescription2 == records.get(1).Description);
+            Assert.AreEqual(expectedLength, records.Count);
+            Assert.AreEqual(expectedEventTitle1, records[0].Title);
+            Assert.AreEqual(expectedEventDescription1, records[0].Description);
+            Assert.AreEqual(expectedEventTitle2, records[1].Title);
+            Assert.AreEqual(expectedEventDescription2, records[1].Description);
         }
 
         [TestMethod]
@@ -49,10 +52,9 @@ namespace backend.Tests
         {
             // Arrange
             EventRepository repo = new EventRepository();
-            bool expectedResult = true;
             EventRecord record = new EventRecord()
             {
-                ListingId = -1,
+           
                 Title = "Test Event",
                 Description = "Test Description",
                 StartTime = new DateTime (2020, 3, 15, 1, 0, 0),
@@ -63,10 +65,10 @@ namespace backend.Tests
             };
 
             // Act
-            boolean result = repo.PostNewEvent(record);
+            bool result = repo.PostNewEvent(record);
 
             // Assert
-            Assert.True(expectedResult == result);
+            Assert.IsTrue(result);
         }
     }
 }

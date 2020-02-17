@@ -10,7 +10,7 @@ namespace backend.Repositories
     {
         public bool PostNewUser(UserRecord newUser)
         {
-
+            return true;
         }
     }
 }

@@ -84,8 +84,8 @@ namespace backend.Repositories
                 using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["backend.Properties.Settings.mapsdb"].ConnectionString))
                 {
                     conn.Open();
-                    string getEventQuery = "insert into cn.Events (Title, Description, StartTime, EndTime, LocX, Locy, UserId) values" +
-                        "'@title', '@description', '@start', '@end', @locX, @locY, @userId);";
+                    string getEventQuery = @"insert into cn.Events (Title, Description, StartTime, EndTime, LocX, Locy, UserId) values
+                        (@title, @description, @start, @end, @locX, @locY, @userId);";
                     using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
                     {
                         cmd.Parameters.AddWithValue("@title", newEvent.Title);
@@ -93,7 +93,7 @@ namespace backend.Repositories
                         cmd.Parameters.AddWithValue("@start", newEvent.StartTime);
                         cmd.Parameters.AddWithValue("@end", newEvent.EndTime);
                         cmd.Parameters.AddWithValue("@locX", newEvent.LocX);
-                        cmd.Parameters.AddWithValue("@locY", newEvent.LoxY);
+                        cmd.Parameters.AddWithValue("@locY", newEvent.LocY);
                         cmd.Parameters.AddWithValue("@userId", newEvent.UserId);
 
                         cmd.ExecuteNonQuery();
