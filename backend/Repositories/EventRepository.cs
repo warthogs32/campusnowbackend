@@ -204,7 +204,7 @@ namespace backend.Repositories
             }
         }
 
-        public List<EventRecord> GetEventByUserId(int UserId)
+        public List<EventRecord> GetEventsByUserId(int UserId)
         {
             List<EventRecord> response = new List<EventRecord>();
             EventRecord userEvent;

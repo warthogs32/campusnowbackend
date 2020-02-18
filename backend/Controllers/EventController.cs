@@ -114,9 +114,9 @@ namespace backend.Controllers
         [HttpGet]
         [ResponseType(typeof(GetEventsByUserIdResponseDTO))]
         [Route("getEventsByUserId/")]
-        public GetEventsByUserIdResponseDTO GetEventByUserId([FromUri]GetEventsByUserIdRequestDTO currentUserId)
+        public GetEventsByUserIdResponseDTO GetEventsByUserId([FromUri]GetEventsByUserIdRequestDTO currentUserId)
         {
-            List<EventRecord> userEvents = _eventRepo.GetEventByUserId(currentUserId.UserId);
+            List<EventRecord> userEvents = _eventRepo.GetEventsByUserId(currentUserId.UserId);
             return new GetEventsByUserIdResponseDTO
             {
                 Events = userEvents.Select(x => EventRecordTransformer.Transform(x)).ToList()
