@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using backend.DTOs;
 using System.Web.Http;
 using backend.Repositories;
+using System.Web.Http.Description;
 
 namespace backend.Controllers
 {
@@ -20,7 +21,13 @@ namespace backend.Controllers
     {
         private LoginRepository _loginRepo = new LoginRepository();
 
+        /// <summary>
+        /// User login.
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns>JSON web token when authenticated, or unauthorized status code for failure.</returns>
         [Route("authenticate/")]
+        [ResponseType(typeof(IHttpActionResult))]
         [HttpPost]
         public IHttpActionResult Authenticate([FromBody] LoginRequestDTO login)
         {

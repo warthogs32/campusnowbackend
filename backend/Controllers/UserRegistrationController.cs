@@ -17,6 +17,11 @@ namespace backend.Controllers
     {
         private UserRepository _userRepo = new UserRepository();
 
+        /// <summary>
+        /// Register a new user.
+        /// </summary>
+        /// <param name="newUserRequest"></param>
+        /// <returns>True for success, false for failure.</returns>
         [HttpPost]
         [ResponseType(typeof(PostNewUserResponseDTO))]
         [Route("newUser/")]
