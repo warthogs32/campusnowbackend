@@ -122,5 +122,19 @@ namespace backend.Controllers
                 Events = userEvents.Select(x => EventRecordTransformer.Transform(x)).ToList()
             };
         }
+
+        /// <summary>
+        /// List all events within a speficied time range.
+        /// </summary>
+        /// <param name="timeInterval"></param>
+        /// <returns>List of event records in a specified time range.</returns>
+        public GetEventsByTimeRangeResponseDTO GetEventsByTimeRange([FromBody]GetEventsByTimeRangeRequestDTO timeInterval)
+        {
+            List<EventRecord> eventsInTimeInterval = _eventRepo.GetEventsByTimeRange(timeInterval.StartTime, timeInterval.EndTime);
+            return new GetEventsByTimeRangeResponseDTO
+            {
+                Events = eventsInTimeInterval.Select(x => EventRecordTransformer.Transform(x)).ToList()
+            };
+        }
     }
 }

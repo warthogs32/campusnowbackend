@@ -244,5 +244,47 @@ namespace backend.Repositories
             }
             return response;
         }
+
+        public List<EventRecord> GetEventsByTimeRange(DateTime startTime, DateTime endTime)
+        {
+            List<EventRecord> response = new List<EventRecord>();
+            EventRecord userEvent;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
+                {
+                    conn.Open();
+                    string getEventByUserIdQuery = @"select * from cn.Events where StartTime > @startTime and StartTime < @endTime;";
+                    using (SqlCommand cmd = new SqlCommand(getEventByUserIdQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@startTime", startTime);
+                        cmd.Parameters.AddWithValue("@endTime", endTime);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                userEvent = new EventRecord()
+                                {
+                                    ListingId = Int32.Parse(reader["ListingId"].ToString()),
+                                    Title = reader["Title"].ToString(),
+                                    Description = reader["Description"].ToString(),
+                                    StartTime = DateTime.Parse(reader["StartTime"].ToString()),
+                                    EndTime = DateTime.Parse(reader["EndTime"].ToString()),
+                                    LocX = float.Parse(reader["LocX"].ToString()),
+                                    LocY = float.Parse(reader["LocY"].ToString()),
+                                    UserId = Int32.Parse(reader["UserId"].ToString())
+                                };
+                                response.Add(userEvent);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                return new List<EventRecord>();
+            }
+            return response;
+        }
     }
 }
