@@ -11,7 +11,7 @@ namespace backend.Repositories
 {
     public class EventRepository
     {
-        public bool DoesEventBelongToUser(int currentEventId)
+        private bool DoesEventBelongToUser(int currentEventId)
         {
             bool permit;
             using(SqlConnection conn = new SqlConnection())
@@ -202,6 +202,47 @@ namespace backend.Repositories
             {
                 return false;
             }
+        }
+
+        public List<EventRecord> GetEventByUserId(int UserId)
+        {
+            List<EventRecord> response = new List<EventRecord>();
+            EventRecord userEvent;
+            try 
+            {
+                using(SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
+                {
+                    conn.Open();
+                    string getEventByUserIdQuery = @"select * from cn.Events where UserId = @UserId;";
+                    using (SqlCommand cmd = new SqlCommand(getEventByUserIdQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@UserId", UserId);
+                        using(SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                userEvent = new EventRecord()
+                                {
+                                    ListingId = Int32.Parse(reader["ListingId"].ToString()),
+                                    Title = reader["Title"].ToString(),
+                                    Description = reader["Description"].ToString(),
+                                    StartTime = DateTime.Parse(reader["StartTime"].ToString()),
+                                    EndTime = DateTime.Parse(reader["EndTime"].ToString()),
+                                    LocX = float.Parse(reader["LocX"].ToString()),
+                                    LocY = float.Parse(reader["LocY"].ToString()),
+                                    UserId = Int32.Parse(reader["UserId"].ToString())
+                                };
+                                response.Add(userEvent);
+                            }
+                        }
+                    }
+                }
+            }
+            catch(SqlException e)
+            {
+                return new List<EventRecord>();
+            }
+            return response;
         }
     }
 }

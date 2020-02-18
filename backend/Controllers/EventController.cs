@@ -39,7 +39,7 @@ namespace backend.Controllers
         /// <param name="eventIdRequest"></param>
         /// <returns>Event record with the given ID.</returns>
         [HttpGet]
-        [ResponseType(typeof(GetEventByIdResponseDTO))]
+        [ResponseType(typeof(GetEventsByUserIdResponseDTO))]
         [Route("getEventById/")]
         public GetEventByIdResponseDTO GetEventById([FromUri]GetEventByIdRequestDTO eventIdRequest)
         {
@@ -103,6 +103,23 @@ namespace backend.Controllers
             return new DeleteEventResponseDTO
             {
                 Status = deleteEventResponse
+            };
+        }
+
+        /// <summary>
+        /// Lists all of a user's events.
+        /// </summary>
+        /// <param name="currentUserId"></param>
+        /// <returns>List of a user's events.</returns>
+        [HttpGet]
+        [ResponseType(typeof(GetEventsByUserIdResponseDTO))]
+        [Route("getEventsByUserId/")]
+        public GetEventsByUserIdResponseDTO GetEventByUserId([FromUri]GetEventsByUserIdRequestDTO currentUserId)
+        {
+            List<EventRecord> userEvents = _eventRepo.GetEventByUserId(currentUserId.UserId);
+            return new GetEventsByUserIdResponseDTO
+            {
+                Events = userEvents.Select(x => EventRecordTransformer.Transform(x)).ToList()
             };
         }
     }

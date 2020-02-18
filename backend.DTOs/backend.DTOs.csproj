@@ -47,6 +47,10 @@
     <Compile Include="GetAllEventsResponseDTO.cs" />
     <Compile Include="GetEventByIdRequestDTO.cs" />
     <Compile Include="GetEventByIdResponseDTO.cs" />
+    <Compile Include="GetEventsByTimeRangeRequestDTO.cs" />
+    <Compile Include="GetEventsByTimeRangeResponseDTO.cs" />
+    <Compile Include="GetEventsByUserIdRequestDTO.cs" />
+    <Compile Include="GetEventsByUserIdResponseDTO.cs" />
     <Compile Include="LocationDTO.cs" />
     <Compile Include="LoginRequestDTO.cs" />
     <Compile Include="LoginResponseDTO.cs" />
