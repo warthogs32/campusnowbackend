@@ -128,7 +128,10 @@ namespace backend.Controllers
         /// </summary>
         /// <param name="timeInterval"></param>
         /// <returns>List of event records in a specified time range.</returns>
-        public GetEventsByTimeRangeResponseDTO GetEventsByTimeRange([FromBody]GetEventsByTimeRangeRequestDTO timeInterval)
+        [HttpPost]
+        [ResponseType(typeof(GetEventsByTimeRangeResponseDTO))]
+        [Route("getEventsByTimeRange/")]
+        public GetEventsByTimeRangeResponseDTO PostGetEventsByTimeRange([FromBody]GetEventsByTimeRangeRequestDTO timeInterval)
         {
             List<EventRecord> eventsInTimeInterval = _eventRepo.GetEventsByTimeRange(timeInterval.StartTime, timeInterval.EndTime);
             return new GetEventsByTimeRangeResponseDTO
