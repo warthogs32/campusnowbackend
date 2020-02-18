@@ -1,0 +1,360 @@
+{
+	"info": {
+		"_postman_id": "3a20faac-2989-4d96-b790-532adc2a7e75",
+		"name": "campusnow_remote",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Username\": \"jj\",\n\t\"Password\": \"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://campusnow.tech/user/login/authenticate",
+					"protocol": "http",
+					"host": [
+						"campusnow",
+						"tech"
+					],
+					"path": [
+						"user",
+						"login",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllEvents",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpqIiwibmJmIjoxNTgxOTEwMjI0LCJleHAiOjE1ODI1MTUwMjQsImlhdCI6MTU4MTkxMDIyNCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDE5MSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAxOTEifQ.z_VbkvSBzWd0hpybMj4dI0kqKLAwhNbQCbx93qAm1hM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "EventId",
+						"value": "1",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://campusnow.tech/api/event/getAllEvents",
+					"protocol": "http",
+					"host": [
+						"campusnow",
+						"tech"
+					],
+					"path": [
+						"api",
+						"event",
+						"getAllEvents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postNewEvent",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpqIiwibmJmIjoxNTgxOTA2MDkwLCJleHAiOjE1ODI1MTA4OTAsImlhdCI6MTU4MTkwNjA5MCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDE5MSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAxOTEifQ.HZNzCuhNsksU5P8dEw2sPuMyrHVqzit7ZYjNN_NVtp8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"NewEvent\": {\r\n        \"UserId\": 1,\r\n        \"Title\": \"ExampleEvent\",\r\n        \"Description\": \"New EventDescription\",\r\n        \"StartTime\": \"2020-03-15T06:30:00\",\r\n        \"EndTime\": \"2020-03-15T08:00:00\",\r\n        \"LocX\": 60.299999237060547,\r\n        \"LocY\": -34.200000762939453\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://campusnow.tech/api/event/postNewEvent",
+					"protocol": "http",
+					"host": [
+						"campusnow",
+						"tech"
+					],
+					"path": [
+						"api",
+						"event",
+						"postNewEvent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postNewUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"NewUserRecord\": {\r\n        \"UserName\": \"user3\",\r\n        \"Password\": \"32warthogs\",\r\n        \"FirstName\": \"AA\",\r\n        \"LastName\": \"BB\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://campusnow.tech/user/register/newUser",
+					"protocol": "http",
+					"host": [
+						"campusnow",
+						"tech"
+					],
+					"path": [
+						"user",
+						"register",
+						"newUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateEvent",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIxIiwibmJmIjoxNTgxOTc2ODMzLCJleHAiOjE1ODI1ODE2MzMsImlhdCI6MTU4MTk3NjgzMywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDE5MSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAxOTEifQ.DjbPLDsRCV8YwOkGizPGxWAEUQtsOyM6ZzX2yVHVs-o",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"UpdatedEvent\": {\r\n        \"ListingId\": 5,\r\n        \"Title\": \"ExampleEventts\",\r\n        \"Description\": \"New EventDescription\",\r\n        \"StartTime\": \"2020-03-15T06:30:00\",\r\n        \"EndTime\": \"2020-03-15T08:00:00\",\r\n        \"LocX\": 60.299999237060547,\r\n        \"LocY\": -34.200000762939453\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://campusnow.tech/api/event/updateEvent",
+					"protocol": "http",
+					"host": [
+						"campusnow",
+						"tech"
+					],
+					"path": [
+						"api",
+						"event",
+						"updateEvent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteEvent",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\tEventIdToDelete : 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://campusnow.tech/api/event/deleteEvent",
+					"protocol": "http",
+					"host": [
+						"campusnow",
+						"tech"
+					],
+					"path": [
+						"api",
+						"event",
+						"deleteEvent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getEventsByUserId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://campusnow.tech/api/event/getEventsByUserId?UserId=5",
+					"protocol": "http",
+					"host": [
+						"campusnow",
+						"tech"
+					],
+					"path": [
+						"api",
+						"event",
+						"getEventsByUserId"
+					],
+					"query": [
+						{
+							"key": "UserId",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getEventsByTimeRange",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"StartTime\": \"2020-03-10T06:30:00\",\n    \"EndTime\": \"2020-03-15T08:00:00\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://campusnow.tech/api/event/getEventsByTimeRange/",
+					"protocol": "http",
+					"host": [
+						"campusnow",
+						"tech"
+					],
+					"path": [
+						"api",
+						"event",
+						"getEventsByTimeRange",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImpqIiwibmJmIjoxNTgxOTA2MDkwLCJleHAiOjE1ODI1MTA4OTAsImlhdCI6MTU4MTkwNjA5MCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDE5MSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAxOTEifQ.HZNzCuhNsksU5P8dEw2sPuMyrHVqzit7ZYjNN_NVtp8",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "b533fc1d-f66d-4d80-bf61-2395e1a95c6d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "2e7a4aad-7e08-48f7-9000-fad208a109ae",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
