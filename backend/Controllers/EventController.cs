@@ -8,11 +8,13 @@ using backend.Repositories;
 using backend.DTOs;
 using System.Web.Http.Description;
 using backend.Models;
+using System.Web.Http.Cors;
 using backend.Transformers;
 
 namespace backend.Controllers
 {
     [RoutePrefix("api/event")]
+    [EnableCors(origins: "http://campusnowbackend.azurewebsites.net", headers: "*", methods: "*")]
     public class EventController : ApiController
     {
         private EventRepository _eventRepo = new EventRepository();
