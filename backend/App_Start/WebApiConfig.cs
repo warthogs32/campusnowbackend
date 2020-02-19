@@ -13,6 +13,7 @@ namespace backend
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+            config.EnableCors();
             config.MessageHandlers.Add(new TokenValidationHandler ());
 
             config.Routes.MapHttpRoute(
