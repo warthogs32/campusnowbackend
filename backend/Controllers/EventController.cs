@@ -14,7 +14,7 @@ using backend.Transformers;
 namespace backend.Controllers
 {
     [RoutePrefix("api/event")]
-    [EnableCors(origins: "http://campusnowbackend.azurewebsites.net", headers: "*", methods: "*")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class EventController : ApiController
     {
         private EventRepository _eventRepo = new EventRepository();
