@@ -13,10 +13,12 @@ using backend.DTOs;
 using System.Web.Http;
 using backend.Repositories;
 using System.Web.Http.Description;
+using System.Web.Http.Cors;
 
 namespace backend.Controllers
 {
     [RoutePrefix("user/login")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class LoginController : ApiController
     {
         private LoginRepository _loginRepo = new LoginRepository();

@@ -9,10 +9,12 @@ using backend.Repositories;
 using System.Web.Http.Description;
 using backend.Models;
 using backend.Transformers;
+using System.Web.Http.Cors;
 
 namespace backend.Controllers
 {
     [RoutePrefix("user/register")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UserRegistrationController : ApiController
     {
         private UserRepository _userRepo = new UserRepository();
