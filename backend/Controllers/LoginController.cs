@@ -45,6 +45,7 @@ namespace backend.Controllers
             if (isUsernamePasswordValid)
             {
                 string token = createToken(loginrequest.Username);
+                LoginRepository.CurrentUser.Token = token;
                 //return the token
                 return Ok<string>(token);
             }
@@ -58,12 +59,27 @@ namespace backend.Controllers
             }
         }
 
+        /// <summary>
+        /// User logout
+        /// </summary>
+        /// <returns>True for success, false for failure.</returns>
+        [Route("logout/")]
+        [ResponseType(typeof(LogoutResponseDTO))]
+        [HttpGet]
+        public LogoutResponseDTO Logout()
+        {
+            return new LogoutResponseDTO()
+            { 
+                status = LoginRepository.Logout(LoginRepository.CurrentUser.Token)
+            };
+        }
+
         private string createToken(string username)
         {
             //Set issued at date
-            DateTime issuedAt = DateTime.UtcNow;
+            DateTime issuedAt = DateTime.Now;
             //set the time when it expires
-            DateTime expires = DateTime.UtcNow.AddDays(1);
+            DateTime expires = issuedAt.AddDays(23);
 
             //http://stackoverflow.com/questions/18223868/how-to-encrypt-jwt-security-token
             var tokenHandler = new JwtSecurityTokenHandler();
