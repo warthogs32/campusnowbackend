@@ -54,6 +54,7 @@
     <Compile Include="LocationDTO.cs" />
     <Compile Include="LoginRequestDTO.cs" />
     <Compile Include="LoginResponseDTO.cs" />
+    <Compile Include="LogoutResponseDTO.cs" />
     <Compile Include="PostNewEventRequestDTO.cs" />
     <Compile Include="PostNewEventResponseDTO.cs" />
     <Compile Include="PostNewUserRequestDTO.cs" />

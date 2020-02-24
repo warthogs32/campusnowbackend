@@ -16,7 +16,7 @@ namespace backend.Repositories
                 using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
                 {
                     conn.Open();
-                    string getEventQuery = @"insert into cn.Users (UserName, Password, FirstName, LastName, JoinDate) values
+                    string getEventQuery = @"insert into cn.Users (UserName, Password, FirstName, LastName, JoinDate, IsAdmin) values
                         (@UserName, @Password, @FirstName, @LastName, @JoinDate, @IsAdmin);";
                     using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
                     {

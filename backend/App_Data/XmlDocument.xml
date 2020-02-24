@@ -536,6 +536,12 @@
             <param name="login"></param>
             <returns>JSON web token when authenticated, or unauthorized status code for failure.</returns>
         </member>
+        <member name="M:backend.Controllers.LoginController.Logout">
+            <summary>
+            User logout
+            </summary>
+            <returns>True for success, false for failure.</returns>
+        </member>
         <member name="M:backend.Controllers.UserRegistrationController.PostNewUser(backend.DTOs.PostNewUserRequestDTO)">
             <summary>
             Register a new user.

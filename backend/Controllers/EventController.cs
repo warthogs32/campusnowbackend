@@ -5,11 +5,13 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using backend.Repositories;
+using System.Net.Http.Headers;
 using backend.DTOs;
 using System.Web.Http.Description;
 using backend.Models;
 using System.Web.Http.Cors;
 using backend.Transformers;
+using System.Web;
 
 namespace backend.Controllers
 {
@@ -65,6 +67,7 @@ namespace backend.Controllers
         [Route("postNewEvent/")]
         public PostNewEventResponseDTO PostNewEvent([FromBody]PostNewEventRequestDTO newEvent)
         {
+            //context.Request.Headers["Authorization"];
             bool newEventResponse = _eventRepo.PostNewEvent(EventRecordTransformer.Transform(newEvent.NewEvent));
             return new PostNewEventResponseDTO
             {
