@@ -22,7 +22,8 @@ namespace backend.Transformers
                 Password = user.Password,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                JoinDate = user.JoinDate
+                JoinDate = user.JoinDate,
+                IsAdmin = Convert.ToInt32(user.IsAdmin)
             };
 
             return dto;
@@ -41,7 +42,8 @@ namespace backend.Transformers
                 Password = dto.Password,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
-                JoinDate = dto.JoinDate
+                JoinDate = dto.JoinDate,
+                IsAdmin = Convert.ToBoolean(dto.IsAdmin)
             };
 
             return user;

@@ -17,7 +17,7 @@ namespace backend.Repositories
                 {
                     conn.Open();
                     string getEventQuery = @"insert into cn.Users (UserName, Password, FirstName, LastName, JoinDate) values
-                        (@UserName, @Password, @FirstName, @LastName, @JoinDate);";
+                        (@UserName, @Password, @FirstName, @LastName, @JoinDate, @IsAdmin);";
                     using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
                     {
                         cmd.Parameters.AddWithValue("@UserName", newUser.UserName);
@@ -25,6 +25,7 @@ namespace backend.Repositories
                         cmd.Parameters.AddWithValue("@FirstName", newUser.FirstName);
                         cmd.Parameters.AddWithValue("@LastName", newUser.LastName);
                         cmd.Parameters.AddWithValue("@JoinDate", DateTime.Now);
+                        cmd.Parameters.AddWithValue("@IsAdmin", Convert.ToInt32(false));
                         cmd.ExecuteNonQuery();
                     }
                 }

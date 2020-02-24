@@ -49,10 +49,19 @@ namespace backend.Models
 			set { _joinDate = value;  }
 		}
 
+		private string _token;
+		public string Token
+		{
+			get { return _token; }
+			set { _token = value; }
+		}
 
-
-
-
+		private bool _isAdmin;
+		public bool IsAdmin
+		{
+			get { return _isAdmin; }
+			set { _isAdmin = value; }
+		}
 
 	}
 }
