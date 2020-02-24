@@ -12,9 +12,11 @@ using backend.Models;
 using System.Web.Http.Cors;
 using backend.Transformers;
 using System.Web;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [RoutePrefix("api/event")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class EventController : ApiController

@@ -3,12 +3,14 @@ using System.Web.Http;
 using System.Web.Mvc;
 using backend.Areas.HelpPage.ModelDescriptions;
 using backend.Areas.HelpPage.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend.Areas.HelpPage.Controllers
 {
     /// <summary>
     /// The controller that will handle requests for the help page.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class HelpController : Controller
     {
         private const string ErrorViewName = "Error";

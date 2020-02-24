@@ -10,9 +10,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using backend.Repositories;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend
 {
+    [ExcludeFromCodeCoverage]
     internal class TokenValidationHandler : DelegatingHandler
     {
         private static bool TryRetrieveToken(HttpRequestMessage request, out string token)

@@ -14,9 +14,11 @@ using System.Web.Http;
 using backend.Repositories;
 using System.Web.Http.Description;
 using System.Web.Http.Cors;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [RoutePrefix("user/login")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class LoginController : ApiController

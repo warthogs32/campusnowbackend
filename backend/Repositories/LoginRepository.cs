@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Diagnostics.CodeAnalysis;
 using backend.Models;
 
 namespace backend.Repositories
@@ -50,6 +51,7 @@ namespace backend.Repositories
             return exists;
         }
 
+        [ExcludeFromCodeCoverage]
         public static bool Logout(string token)
         {
             try

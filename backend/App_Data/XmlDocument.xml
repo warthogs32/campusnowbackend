@@ -184,11 +184,6 @@
             Use this attribute to change the name of the <see cref="T:backend.Areas.HelpPage.ModelDescriptions.ModelDescription"/> generated for a type.
             </summary>
         </member>
-        <member name="T:backend.Areas.HelpPage.Models.HelpPageApiModel">
-            <summary>
-            The model that represents an API displayed on the help page.
-            </summary>
-        </member>
         <member name="M:backend.Areas.HelpPage.Models.HelpPageApiModel.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:backend.Areas.HelpPage.Models.HelpPageApiModel"/> class.

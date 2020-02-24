@@ -13,9 +13,11 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Description;
 using backend.Areas.HelpPage.ModelDescriptions;
 using backend.Areas.HelpPage.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend.Areas.HelpPage
 {
+    [ExcludeFromCodeCoverage]
     public static class HelpPageConfigurationExtensions
     {
         private const string ApiModelPrefix = "MS_HelpPageApiModel_";

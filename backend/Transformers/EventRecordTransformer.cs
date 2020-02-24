@@ -4,9 +4,11 @@ using System.Linq;
 using System.Web;
 using backend.DTOs;
 using backend.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend.Transformers
 {
+    [ExcludeFromCodeCoverage]
     public class EventRecordTransformer
     {
         /// <summary>

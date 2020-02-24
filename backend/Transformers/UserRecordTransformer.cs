@@ -4,9 +4,11 @@ using System.Linq;
 using backend.DTOs;
 using System.Web;
 using backend.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend.Transformers
 {
+    [ExcludeFromCodeCoverage]
     public class UserRecordTransformer
     {
         public static UserRecordDTO Transform(UserRecord user)
