@@ -47,6 +47,8 @@ namespace backend.Tests
         public void TestPostNewEvent()
         {
             // Arrange
+            LoginRepository loginRepo = new LoginRepository();
+            ///loginRepo.IsUserLoginValid(...);
             EventRepository repo = new EventRepository();
             EventRecord record = new EventRecord()
             {
