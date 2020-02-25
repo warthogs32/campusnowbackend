@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend.Areas.HelpPage.ModelDescriptions
 {
+    [ExcludeFromCodeCoverage]
     public class ParameterDescription
     {
         public ParameterDescription()

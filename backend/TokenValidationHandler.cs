@@ -8,10 +8,13 @@ using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
+using backend.Repositories;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend
 {
+    [ExcludeFromCodeCoverage]
     internal class TokenValidationHandler : DelegatingHandler
     {
         private static bool TryRetrieveToken(HttpRequestMessage request, out string token)
@@ -23,6 +26,10 @@ namespace backend
                 return false;
             }
             var bearerToken = authzHeaders.ElementAt(0);
+            if(LoginRepository.IsTokenBlacklisted(bearerToken))
+            {
+                return false;
+            }
             token = bearerToken.StartsWith("Bearer ") ? bearerToken.Substring(7) : bearerToken;
             return true;
         }
@@ -78,7 +85,7 @@ namespace backend
         {
             if (expires != null)
             {
-                if (DateTime.UtcNow < expires) return true;
+                if (DateTime.Now < expires) return true;
             }
             return false;
         }

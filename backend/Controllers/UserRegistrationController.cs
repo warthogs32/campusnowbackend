@@ -9,10 +9,14 @@ using backend.Repositories;
 using System.Web.Http.Description;
 using backend.Models;
 using backend.Transformers;
+using System.Web.Http.Cors;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [RoutePrefix("user/register")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UserRegistrationController : ApiController
     {
         private UserRepository _userRepo = new UserRepository();

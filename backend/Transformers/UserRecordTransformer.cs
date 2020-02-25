@@ -4,9 +4,11 @@ using System.Linq;
 using backend.DTOs;
 using System.Web;
 using backend.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend.Transformers
 {
+    [ExcludeFromCodeCoverage]
     public class UserRecordTransformer
     {
         public static UserRecordDTO Transform(UserRecord user)
@@ -22,7 +24,8 @@ namespace backend.Transformers
                 Password = user.Password,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                JoinDate = user.JoinDate
+                JoinDate = user.JoinDate,
+                IsAdmin = Convert.ToInt32(user.IsAdmin)
             };
 
             return dto;
@@ -41,7 +44,8 @@ namespace backend.Transformers
                 Password = dto.Password,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
-                JoinDate = dto.JoinDate
+                JoinDate = dto.JoinDate,
+                IsAdmin = Convert.ToBoolean(dto.IsAdmin)
             };
 
             return user;

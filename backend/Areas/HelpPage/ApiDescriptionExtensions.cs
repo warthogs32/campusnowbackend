@@ -2,9 +2,11 @@ using System;
 using System.Text;
 using System.Web;
 using System.Web.Http.Description;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend.Areas.HelpPage
 {
+    [ExcludeFromCodeCoverage]
     public static class ApiDescriptionExtensions
     {
         /// <summary>

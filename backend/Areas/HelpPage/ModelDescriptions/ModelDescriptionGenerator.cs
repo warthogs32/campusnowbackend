@@ -9,6 +9,7 @@ using System.Runtime.Serialization;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Xml.Serialization;
+using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 
 namespace backend.Areas.HelpPage.ModelDescriptions
@@ -16,6 +17,7 @@ namespace backend.Areas.HelpPage.ModelDescriptions
     /// <summary>
     /// Generates model descriptions for given types.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class ModelDescriptionGenerator
     {
         // Modify this to support more data annotation attributes.

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using backend.Models;
+using System.Diagnostics.CodeAnalysis;
 using backend.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace backend.Tests
 {
     [TestClass]
+    [ExcludeFromCodeCoverage]
     public class EventsTest
     {
         [TestMethod]

@@ -6,12 +6,14 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Description;
 using System.Xml.XPath;
 using backend.Areas.HelpPage.ModelDescriptions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend.Areas.HelpPage
 {
     /// <summary>
     /// A custom <see cref="IDocumentationProvider"/> that reads the API documentation from an XML documentation file.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class XmlDocumentationProvider : IDocumentationProvider, IModelDocumentationProvider
     {
         private XPathNavigator _documentNavigator;

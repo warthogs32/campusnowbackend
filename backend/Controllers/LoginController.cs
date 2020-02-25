@@ -13,10 +13,14 @@ using backend.DTOs;
 using System.Web.Http;
 using backend.Repositories;
 using System.Web.Http.Description;
+using System.Web.Http.Cors;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [RoutePrefix("user/login")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class LoginController : ApiController
     {
         private LoginRepository _loginRepo = new LoginRepository();
@@ -43,6 +47,7 @@ namespace backend.Controllers
             if (isUsernamePasswordValid)
             {
                 string token = createToken(loginrequest.Username);
+                LoginRepository.CurrentUser.Token = token;
                 //return the token
                 return Ok<string>(token);
             }
@@ -56,12 +61,27 @@ namespace backend.Controllers
             }
         }
 
+        /// <summary>
+        /// User logout
+        /// </summary>
+        /// <returns>True for success, false for failure.</returns>
+        [Route("logout/")]
+        [ResponseType(typeof(LogoutResponseDTO))]
+        [HttpGet]
+        public LogoutResponseDTO Logout()
+        {
+            return new LogoutResponseDTO()
+            { 
+                status = LoginRepository.Logout(LoginRepository.CurrentUser.Token)
+            };
+        }
+
         private string createToken(string username)
         {
             //Set issued at date
-            DateTime issuedAt = DateTime.UtcNow;
+            DateTime issuedAt = DateTime.Now;
             //set the time when it expires
-            DateTime expires = DateTime.UtcNow.AddDays(1);
+            DateTime expires = issuedAt.AddDays(23);
 
             //http://stackoverflow.com/questions/18223868/how-to-encrypt-jwt-security-token
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -74,8 +94,8 @@ namespace backend.Controllers
 
             const string sec = "401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1";
             var now = DateTime.UtcNow;
-            var securityKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(sec));
-            var signingCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(securityKey, Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature);
+            var securityKey = new SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(sec));
+            var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
 
             //create the jwt

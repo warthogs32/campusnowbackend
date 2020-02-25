@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net.Http.Headers;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend.Areas.HelpPage
 {
     /// <summary>
     /// This is used to identify the place where the sample should be applied.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class HelpPageSampleKey
     {
         /// <summary>

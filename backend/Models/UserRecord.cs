@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 using System.Web;
 
 namespace backend.Models
 {
+	[ExcludeFromCodeCoverage]
     public class UserRecord
     {
 		private int _userId;
@@ -49,10 +51,19 @@ namespace backend.Models
 			set { _joinDate = value;  }
 		}
 
+		private string _token;
+		public string Token
+		{
+			get { return _token; }
+			set { _token = value; }
+		}
 
-
-
-
+		private bool _isAdmin;
+		public bool IsAdmin
+		{
+			get { return _isAdmin; }
+			set { _isAdmin = value; }
+		}
 
 	}
 }

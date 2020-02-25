@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Diagnostics.CodeAnalysis;
 using backend.Models;
 
 namespace backend.Repositories
@@ -13,7 +14,7 @@ namespace backend.Repositories
         public bool IsUserLoginValid(string userName, string password)
         {
             bool exists;
-            using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
+            using (SqlConnection conn = new SqlConnection(Properties.Resources.sqlconnection))
             {
                 conn.Open();
                 string getEventQuery = @"select * from cn.Users
@@ -48,6 +49,60 @@ namespace backend.Repositories
                 }
             }
             return exists;
+        }
+
+        [ExcludeFromCodeCoverage]
+        public static bool Logout(string token)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(Properties.Resources.sqlconnection))
+                {
+                    conn.Open();
+                    string writeTokenQuery = @"insert into cn.logout_tokens (token) values (@token);";
+                    using (SqlCommand cmd = new SqlCommand(writeTokenQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@token", token);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                CurrentUser = null;
+                return true;
+            }
+            catch (SqlException e)
+            {
+                return false;
+            }
+        }
+
+        public static bool IsTokenBlacklisted(string token)
+        {
+            try 
+            {
+                bool exists = false;
+                using (SqlConnection conn = new SqlConnection(Properties.Resources.sqlconnection))
+                {
+                    conn.Open();
+                    string ValidateTokenQuery = @"select * from cn.logout_tokens
+	                where token = @token;";
+                    using(SqlCommand cmd = new SqlCommand(ValidateTokenQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@token", token.Substring(7));
+                        using(SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if(reader.HasRows)
+                            {
+                                exists = true;
+                            }
+                        }
+                    }
+                }
+                return exists;
+            }
+            catch(SqlException e)
+            {
+                return false;
+            }
         }
     }
 }

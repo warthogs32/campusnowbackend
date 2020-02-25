@@ -3,9 +3,11 @@ using System.Collections.ObjectModel;
 using System.Net.Http.Headers;
 using System.Web.Http.Description;
 using backend.Areas.HelpPage.ModelDescriptions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend.Areas.HelpPage.Models
 {
+    [ExcludeFromCodeCoverage]
     /// <summary>
     /// The model that represents an API displayed on the help page.
     /// </summary>
