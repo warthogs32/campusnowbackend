@@ -29,7 +29,7 @@ namespace backend.Repositories
             using(SqlConnection conn = new SqlConnection(_sqlConnectionString))
             {
                 conn.Open();
-                string checkEventQuery = "select * from cn.Events where ListingId = @ListingId and UserId = @UserId";
+                string checkEventQuery = @"select * from cn.Events where ListingId = @ListingId and UserId = @UserId";
                 using (SqlCommand cmd = new SqlCommand(checkEventQuery, conn))
                 {
                     cmd.Parameters.AddWithValue("@ListingId", currentEventId);
@@ -58,7 +58,7 @@ namespace backend.Repositories
             using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
             {
                 conn.Open();
-                string getEventQuery = "select * from cn.Events where ListingId = @eventId";
+                string getEventQuery = @"select * from cn.Events where ListingId = @eventId";
                 using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
                 {
                     cmd.Parameters.AddWithValue("@eventId", eventId);
