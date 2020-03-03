@@ -15,7 +15,7 @@ namespace backend.Tests
         public void TestGetEventById()
         {
             // Arrange
-            EventRepository repo = new EventRepository();
+            EventRepository repo = new EventRepository(true);
             int eventId = 5;
             String expectedEventTitle = "ExampleEvent";
             String expectedEventDescription = "New EventDescription";
@@ -31,7 +31,7 @@ namespace backend.Tests
         public void TestGetAllEvents()
         {
             // Arrange
-            EventRepository repo = new EventRepository();
+            EventRepository repo = new EventRepository(true);
             int expectedLength = 1;
             String expectedEventTitle1 = "ExampleEvent";
             String expectedEventDescription1 = "New EventDescription";
@@ -51,7 +51,7 @@ namespace backend.Tests
             // Arrange
             LoginRepository loginRepo = new LoginRepository();
             ///loginRepo.IsUserLoginValid(...);
-            EventRepository repo = new EventRepository();
+            EventRepository repo = new EventRepository(true);
             EventRecord record = new EventRecord()
             {
            
@@ -76,7 +76,7 @@ namespace backend.Tests
         {
             // Arrange
             LoginRepository loginRepo = new LoginRepository();
-            EventRepository repo = new EventRepository();
+            EventRepository repo = new EventRepository(true);
             EventRecord record = new EventRecord()
             {
                 Title = "Test Update Event",
@@ -99,7 +99,7 @@ namespace backend.Tests
         public void TestDeleteEvent()
         {
             // Arrange
-            EventRepository repo = new EventRepository();
+            EventRepository repo = new EventRepository(true);
             int id = 3;
 
             // Act
@@ -113,7 +113,7 @@ namespace backend.Tests
         public void TestGetEventsByTimeRange()
         {
             // Arrange
-            EventRepository repo = new EventRepository();
+            EventRepository repo = new EventRepository(true);
             DateTime start = new DateTime(2020, 3, 1, 1, 0, 0);
             DateTime finish = new DateTime(2020, 4, 1, 1, 0, 0);
             List<EventRecord> expectedRecords = new List<EventRecord>();
