@@ -120,4 +120,7 @@
   <data name="sqlconnection" xml:space="preserve">
     <value>Data Source=atascadero.jj-jj.org,3184;Initial Catalog=307_maps;User ID=2202_csc307g3;Password=32warthogs29;</value>
   </data>
+  <data name="testsqlconnection" xml:space="preserve">
+    <value>Data Source=34.94.72.190,1433;Initial Catalog=307test;User ID=cntest;Password=cn4fun;</value>
+  </data>
 </root>

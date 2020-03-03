@@ -11,12 +11,23 @@ namespace backend.Repositories
 {
     public class EventRepository
     {
+        private string _sqlConnectionString;
+        public EventRepository(bool isTest = false)
+        {
+            if(isTest)
+            {
+                _sqlConnectionString = Properties.Resources.testsqlconnection;
+            }
+            else
+            {
+                _sqlConnectionString = Properties.Resources.sqlconnection;
+            }
+        }
         private bool DoesEventBelongToUser(int currentEventId)
         {
             bool permit;
-            using(SqlConnection conn = new SqlConnection())
+            using(SqlConnection conn = new SqlConnection(_sqlConnectionString))
             {
-                conn.ConnectionString = backend.Properties.Resources.sqlconnection;
                 conn.Open();
                 string checkEventQuery = "select * from cn.Events where ListingId = @ListingId and UserId = @UserId";
                 using (SqlCommand cmd = new SqlCommand(checkEventQuery, conn))
@@ -44,9 +55,8 @@ namespace backend.Repositories
         public EventRecord GetEventById(int eventId)
         {
             EventRecord retrievedEvent = new EventRecord();
-            using (SqlConnection conn = new SqlConnection())
+            using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
             {
-                conn.ConnectionString = backend.Properties.Resources.sqlconnection;
                 conn.Open();
                 string getEventQuery = "select * from cn.Events where ListingId = @eventId";
                 using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
@@ -78,7 +88,7 @@ namespace backend.Repositories
         {
             List<EventRecord> response = new List<EventRecord>();
             EventRecord retrievedEvent;
-            using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
+            using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
             {
                 conn.Open();
                 string getEventsQuery = "select * from cn.Events";
@@ -111,7 +121,7 @@ namespace backend.Repositories
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
+                using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
                 {
                     conn.Open();
                     string getEventQuery = @"insert into cn.Events (Title, Description, StartTime, EndTime, LocX, Locy, UserId) values
@@ -143,7 +153,7 @@ namespace backend.Repositories
             {
                 try
                 {
-                    using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
+                    using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
                     {
                         conn.Open();
                         String updateEventQuery = @"update cn.Events
@@ -181,7 +191,7 @@ namespace backend.Repositories
             {
                 try
                 {
-                    using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
+                    using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
                     {
                         conn.Open();
                         string deleteEventQuery = "delete from cn.Events where ListingId = @eventId";
@@ -210,7 +220,7 @@ namespace backend.Repositories
             EventRecord userEvent;
             try 
             {
-                using(SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
+                using(SqlConnection conn = new SqlConnection(_sqlConnectionString))
                 {
                     conn.Open();
                     string getEventByUserIdQuery = @"select * from cn.Events where UserId = @UserId;";
@@ -251,7 +261,7 @@ namespace backend.Repositories
             EventRecord userEvent;
             try
             {
-                using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
+                using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
                 {
                     conn.Open();
                     string getEventByUserIdQuery = @"select * from cn.Events where StartTime > @startTime and StartTime < @endTime;";

@@ -9,11 +9,23 @@ namespace backend.Repositories
 {
     public class UserRepository
     {
+        private string _sqlConnectionString;
+        public UserRepository(bool isTest = false)
+        {
+            if (isTest)
+            {
+                _sqlConnectionString = Properties.Resources.testsqlconnection;
+            }
+            else
+            {
+                _sqlConnectionString = Properties.Resources.sqlconnection;
+            }
+        }
         public bool PostNewUser(UserRecord newUser)
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
+                using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
                 {
                     conn.Open();
                     string getEventQuery = @"insert into cn.Users (UserName, Password, FirstName, LastName, JoinDate, IsAdmin) values

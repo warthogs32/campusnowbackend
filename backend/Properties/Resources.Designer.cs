@@ -68,5 +68,14 @@ namespace backend.Properties {
                 return ResourceManager.GetString("sqlconnection", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data Source=34.94.72.190,1433;Initial Catalog=307test;User ID=cntest;Password=cn4fun;.
+        /// </summary>
+        internal static string testsqlconnection {
+            get {
+                return ResourceManager.GetString("testsqlconnection", resourceCulture);
+            }
+        }
     }
 }
