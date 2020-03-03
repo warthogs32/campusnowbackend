@@ -11,6 +11,7 @@ namespace backend.Repositories
 {
     public class EventRepository
     {
+        private String table = "cn.Events";
         private bool DoesEventBelongToUser(int currentEventId)
         {
             bool permit;
@@ -18,11 +19,12 @@ namespace backend.Repositories
             {
                 conn.ConnectionString = backend.Properties.Resources.sqlconnection;
                 conn.Open();
-                string checkEventQuery = "select * from cn.Events where ListingId = @ListingId and UserId = @UserId";
+                string checkEventQuery = "select * from @table where ListingId = @ListingId and UserId = @UserId";
                 using (SqlCommand cmd = new SqlCommand(checkEventQuery, conn))
                 {
                     cmd.Parameters.AddWithValue("@ListingId", currentEventId);
                     cmd.Parameters.AddWithValue("@UserId", LoginRepository.CurrentUser.UserId);
+                    cmd.Parameters.AddWithValue("@table", table);
                     using(SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if(reader.Read())
@@ -48,10 +50,11 @@ namespace backend.Repositories
             {
                 conn.ConnectionString = backend.Properties.Resources.sqlconnection;
                 conn.Open();
-                string getEventQuery = "select * from cn.Events where ListingId = @eventId";
+                string getEventQuery = "select * from @table where ListingId = @eventId";
                 using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
                 {
                     cmd.Parameters.AddWithValue("@eventId", eventId);
+                    cmd.Parameters.AddWithValue("@table", table);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
@@ -81,9 +84,10 @@ namespace backend.Repositories
             using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
             {
                 conn.Open();
-                string getEventsQuery = "select * from cn.Events";
+                string getEventsQuery = "select * from @table";
                 using (SqlCommand cmd = new SqlCommand(getEventsQuery, conn))
                 {
+                    cmd.Parameters.AddWithValue("@table", table);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -114,7 +118,7 @@ namespace backend.Repositories
                 using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
                 {
                     conn.Open();
-                    string getEventQuery = @"insert into cn.Events (Title, Description, StartTime, EndTime, LocX, Locy, UserId) values
+                    string getEventQuery = @"insert into @table (Title, Description, StartTime, EndTime, LocX, Locy, UserId) values
                         (@title, @description, @start, @end, @locX, @locY, @userId);";
                     using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
                     {
@@ -125,6 +129,8 @@ namespace backend.Repositories
                         cmd.Parameters.AddWithValue("@locX", newEvent.LocX);
                         cmd.Parameters.AddWithValue("@locY", newEvent.LocY);
                         cmd.Parameters.AddWithValue("@userId", LoginRepository.CurrentUser.UserId);
+
+                        cmd.Parameters.AddWithValue("@table", table);
 
                         cmd.ExecuteNonQuery();
                     }
@@ -146,7 +152,7 @@ namespace backend.Repositories
                     using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
                     {
                         conn.Open();
-                        String updateEventQuery = @"update cn.Events
+                        String updateEventQuery = @"update @table
                         set Title = @title, Description = @description, StartTime = @start, EndTime = @end, LocX = @LocX, LocY = @LocY
                         where ListingId = @id;";
                         using (SqlCommand cmd = new SqlCommand(updateEventQuery, conn))
@@ -158,6 +164,8 @@ namespace backend.Repositories
                             cmd.Parameters.AddWithValue("@LocX", updated.LocX);
                             cmd.Parameters.AddWithValue("@LocY", updated.LocY);
                             cmd.Parameters.AddWithValue("@id", updated.ListingId);
+
+                            cmd.Parameters.AddWithValue("@table", table);
 
                             cmd.ExecuteNonQuery();
                         }
@@ -184,10 +192,11 @@ namespace backend.Repositories
                     using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
                     {
                         conn.Open();
-                        string deleteEventQuery = "delete from cn.Events where ListingId = @eventId";
+                        string deleteEventQuery = "delete from @table where ListingId = @eventId";
                         using (SqlCommand cmd = new SqlCommand(deleteEventQuery, conn))
                         {
                             cmd.Parameters.AddWithValue("@eventId", eventId);
+                            cmd.Parameters.AddWithValue("@table", table);
                             cmd.ExecuteNonQuery();
                         }
                     }
@@ -213,10 +222,11 @@ namespace backend.Repositories
                 using(SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
                 {
                     conn.Open();
-                    string getEventByUserIdQuery = @"select * from cn.Events where UserId = @UserId;";
+                    string getEventByUserIdQuery = @"select * from @table where UserId = @UserId;";
                     using (SqlCommand cmd = new SqlCommand(getEventByUserIdQuery, conn))
                     {
                         cmd.Parameters.AddWithValue("@UserId", UserId);
+                        cmd.Parameters.AddWithValue("@table", table);
                         using(SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
@@ -249,16 +259,18 @@ namespace backend.Repositories
         {
             List<EventRecord> response = new List<EventRecord>();
             EventRecord userEvent;
+            
             try
             {
                 using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
                 {
                     conn.Open();
-                    string getEventByUserIdQuery = @"select * from cn.Events where StartTime > @startTime and StartTime < @endTime;";
+                    string getEventByUserIdQuery = @"select * from @table where StartTime > @startTime and StartTime < @endTime;";
                     using (SqlCommand cmd = new SqlCommand(getEventByUserIdQuery, conn))
                     {
                         cmd.Parameters.AddWithValue("@startTime", startTime);
                         cmd.Parameters.AddWithValue("@endTime", endTime);
+                        cmd.Parameters.AddWithValue("@database", table);
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
@@ -285,6 +297,26 @@ namespace backend.Repositories
                 return new List<EventRecord>();
             }
             return response;
+        }
+        public bool ClearEvents()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
+                {
+                    conn.Open();
+                    string deleteEventQuery = "delete from @table";
+                    using (SqlCommand cmd = new SqlCommand(deleteEventQuery, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                        return true;
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                return false;
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ namespace backend.Repositories
 {
     public class UserRepository
     {
+        private String table = "cn.Users";
         public bool PostNewUser(UserRecord newUser)
         {
             try
@@ -16,10 +17,11 @@ namespace backend.Repositories
                 using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
                 {
                     conn.Open();
-                    string getEventQuery = @"insert into cn.Users (UserName, Password, FirstName, LastName, JoinDate, IsAdmin) values
+                    string getEventQuery = @"insert into @table (UserName, Password, FirstName, LastName, JoinDate, IsAdmin) values
                         (@UserName, @Password, @FirstName, @LastName, @JoinDate, @IsAdmin);";
                     using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
                     {
+                        cmd.Parameters.AddWithValue("@table", table);
                         cmd.Parameters.AddWithValue("@UserName", newUser.UserName);
                         cmd.Parameters.AddWithValue("@Password", newUser.Password);
                         cmd.Parameters.AddWithValue("@FirstName", newUser.FirstName);
@@ -35,6 +37,27 @@ namespace backend.Repositories
                 return false;
             }
             return true;
+        }
+        public bool ClearUsers()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
+                {
+                    conn.Open();
+                    string deleteEventQuery = "delete from @table";
+                    using (SqlCommand cmd = new SqlCommand(deleteEventQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@table", table);
+                        cmd.ExecuteNonQuery();
+                        return true;
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                return false;
+            }
         }
     }
 }
