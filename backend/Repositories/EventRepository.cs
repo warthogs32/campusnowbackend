@@ -296,5 +296,67 @@ namespace backend.Repositories
             }
             return response;
         }
+
+        /*
+        * The methods below are to be used only for testing, and
+        * will not work on the production database
+        */
+        public bool ResetEvents()
+        {
+            if (_sqlConnectionString == Properties.Resources.testsqlconnection)
+            {
+                try
+                {
+                    using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
+                    {
+                        conn.Open();
+                        string getEventQuery = @"delete from cn.Events;";
+                        using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+                catch (SqlException e)
+                {
+                    return false;
+                }
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("You cannot delete all users from the production database");
+                return false;
+            }
+        }
+
+        public bool ResetAutoIncrement()
+        {
+            if (_sqlConnectionString == Properties.Resources.testsqlconnection)
+            {
+                try
+                {
+                    using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
+                    {
+                        conn.Open();
+                        string resetIdentityQuery = @"DBCC CHECKIDENT('cn.Events', RESEED, 0)";
+                        using (SqlCommand cmd = new SqlCommand(resetIdentityQuery, conn))
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+                catch (SqlException e)
+                {
+                    return false;
+                }
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("You cannot reset an identity in the production database");
+                return false;
+            }
+        }
     }
 }
