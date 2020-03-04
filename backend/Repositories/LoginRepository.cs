@@ -10,11 +10,24 @@ namespace backend.Repositories
 {
     public class LoginRepository
     {
+        private static string _sqlConnectionString;
+        public LoginRepository(bool isTest = false)
+        {
+            if (isTest)
+            {
+                _sqlConnectionString = Properties.Resources.testsqlconnection;
+            }
+            else
+            {
+                _sqlConnectionString = Properties.Resources.sqlconnection;
+            }
+        }
+
         public static UserRecord CurrentUser = new UserRecord();
         public bool IsUserLoginValid(string userName, string password)
         {
             bool exists;
-            using (SqlConnection conn = new SqlConnection(Properties.Resources.sqlconnection))
+            using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
             {
                 conn.Open();
                 string getEventQuery = @"select * from cn.Users
@@ -56,7 +69,7 @@ namespace backend.Repositories
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(Properties.Resources.sqlconnection))
+                using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
                 {
                     conn.Open();
                     string writeTokenQuery = @"insert into cn.logout_tokens (token) values (@token);";
@@ -80,7 +93,7 @@ namespace backend.Repositories
             try 
             {
                 bool exists = false;
-                using (SqlConnection conn = new SqlConnection(Properties.Resources.sqlconnection))
+                using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
                 {
                     conn.Open();
                     string ValidateTokenQuery = @"select * from cn.logout_tokens

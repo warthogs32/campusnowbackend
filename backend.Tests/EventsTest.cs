@@ -23,8 +23,6 @@ namespace backend.Tests
             TestEventList = new List<EventRecord>();
 
             //TODO: build json file from existing SQL database
-            String user_json = "[]";
-            String events_json = "[]";
 
             try
             {
@@ -86,35 +84,34 @@ namespace backend.Tests
         public void TestGetEventById()
         {
             // Arrange
-            EventRepository repo = new EventRepository();
-            int eventId = 1;
+            EventRepository repo = new EventRepository(true);
+            int eventId = 5;
+            String expectedEventTitle = "ExampleEvent";
+            String expectedEventDescription = "New EventDescription";
 
             // Act
             EventRecord record = repo.GetEventById(eventId);
-            EventRecord target = TestEventList[0];
 
             // Assert
-            Assert.AreEqual(target.Title, record.Title);
-            Assert.AreEqual(target.Description, record.Description);
+            Assert.AreEqual(expectedEventTitle, record.Title);
+            Assert.AreEqual(expectedEventDescription, record.Description);
         }
         [TestMethod]
         public void TestGetAllEvents()
         {
             // Arrange
-            EventRepository repo = new EventRepository();
-            List<EventRecord> expectedEvents = TestEventList;
+            EventRepository repo = new EventRepository(true);
+            int expectedLength = 1;
+            String expectedEventTitle1 = "ExampleEvent";
+            String expectedEventDescription1 = "New EventDescription";
 
             // Act
             List<EventRecord> records = repo.GetAllEvents();
 
             // Assert
-            Assert.AreEqual(expectedEvents.Count, records.Count);
-            for (int i = 0; i < records.Count; i++)
-            {
-                Assert.AreEqual(expectedEvents[i].ListingId, records[i].ListingId);
-                Assert.AreEqual(expectedEvents[i].Title, records[i].Title);
-                Assert.AreEqual(expectedEvents[i].Description, records[i].Description);
-            }
+            Assert.AreEqual(expectedLength, records.Count);
+            Assert.AreEqual(expectedEventTitle1, records[0].Title);
+            Assert.AreEqual(expectedEventDescription1, records[0].Description);
         }
 
         [TestMethod]
@@ -123,12 +120,11 @@ namespace backend.Tests
             // Arrange
             LoginRepository loginRepo = new LoginRepository();
             loginRepo.IsUserLoginValid("TestUser", "TestPassword");
-            EventRepository repo = new EventRepository();
+            EventRepository repo = new EventRepository(true);
             EventRecord record = new EventRecord()
             {
-                ListingId = 3,
-                Title = "Test Event 3",
-                Description = "Test Description 3",
+                Title = "Test Event",
+                Description = "Test Description",
                 StartTime = new DateTime (2020, 3, 15, 1, 0, 0),
                 EndTime = new DateTime(2020, 3, 15, 3, 0, 0),
                 LocX = 30.5,
@@ -148,7 +144,7 @@ namespace backend.Tests
             // Arrange
             LoginRepository loginRepo = new LoginRepository();
             loginRepo.IsUserLoginValid("TestUser", "TestPassword");
-            EventRepository repo = new EventRepository();
+            EventRepository repo = new EventRepository(true);
             EventRecord record = new EventRecord()
             {
                 Title = "Test Update Event",
@@ -171,8 +167,8 @@ namespace backend.Tests
         public void TestDeleteEvent()
         {
             // Arrange
-            EventRepository repo = new EventRepository();
-            int id = 2;
+            EventRepository repo = new EventRepository(true);
+            int id = 3;
 
             // Act
             bool result = repo.DeleteEvent(id);
@@ -182,33 +178,19 @@ namespace backend.Tests
         }
 
         [TestMethod]
-        public void TestDeleteInvalidEvent()
-        {
-            // Arrange
-            EventRepository repo = new EventRepository();
-            int id = -1;
-
-            // Act
-            bool result = repo.DeleteEvent(id);
-
-            // Assert
-            Assert.IsFalse(result);
-        }
-
-        [TestMethod]
         public void TestGetEventsByTimeRange()
         {
             // Arrange
-            EventRepository repo = new EventRepository();
+            EventRepository repo = new EventRepository(true);
             DateTime start = new DateTime(2020, 3, 1, 1, 0, 0);
             DateTime finish = new DateTime(2020, 4, 1, 1, 0, 0);
-            List<EventRecord> expectedRecords = TestEventList;
+            List<EventRecord> expectedRecords = new List<EventRecord>();
+            //TODO: build expected list of eventRecords
             int expectedSize = expectedRecords.Count;
 
             // Act
-            List<EventRecord> results;
-            results = repo.GetEventsByTimeRange(start, finish);
-            
+            List<EventRecord> results = repo.GetEventsByTimeRange(start, finish);
+
             // Assert
             Assert.AreEqual(expectedSize, results.Count);
             for (int i = 0; i < expectedSize; i++)
@@ -244,7 +226,6 @@ namespace backend.Tests
 
             // Act
             List<EventRecord> records = repo.GetEventsByUserId(user_id);
-            Console.WriteLine("HEllo?");
 
             // Assert
             Assert.AreEqual(expectedEvents.Count, records.Count);
@@ -253,6 +234,11 @@ namespace backend.Tests
                 Assert.AreEqual(expectedEvents[i].ListingId, records[i].ListingId);
                 Assert.AreEqual(expectedEvents[i].Title, records[i].Title);
                 Assert.AreEqual(expectedEvents[i].Description, records[i].Description);
+                Assert.AreEqual(results[i].ListingId, expectedRecords[i].ListingId);
+                Assert.AreEqual(results[i].Title, expectedRecords[i].Title);
+                Assert.AreEqual(results[i].Description, expectedRecords[i].Description);
+                Assert.AreEqual(results[i].StartTime, expectedRecords[i].StartTime);
+                Assert.AreEqual(results[i].EndTime, expectedRecords[i].EndTime);
             }
         }
     }
