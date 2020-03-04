@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using backend.Models;
 using System.Diagnostics.CodeAnalysis;
 using backend.Repositories;
+using System.Data.SqlClient;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace backend.Tests
@@ -13,66 +14,72 @@ namespace backend.Tests
     {
         private List<EventRecord> TestEventList;
 
-        [ClassInitialize]
-        public void setup()
+        [TestInitialize]
+        public void Initialize()
         {
             EventRepository event_repo = new EventRepository();
             UserRepository user_repo = new UserRepository();
-
-            // Post a couple sample events and sample users
-            UserRecord test_user = new UserRecord()
-            {
-                UserId = 1,
-                UserName = "TestUser",
-                Password = "TestPassword",
-                FirstName = "John",
-                LastName = "Smith",
-                JoinDate = new DateTime(2020, 3, 1, 12, 0, 0),
-                IsAdmin = false
-            };
-            user_repo.PostNewUser(test_user);
-
-            EventRecord test_event_1 = new EventRecord()
-            {
-                ListingId = 1,
-                Title = "Event1",
-                Description = "No description",
-                StartTime = new DateTime(2020, 3, 4, 12, 0, 0),
-                EndTime = new DateTime(2020, 3, 4, 13, 30, 0),
-                LocX = 50.7,
-                LocY = 80.3,
-                UserId = 1 // get User id
-            };
-            EventRecord test_event_2 = new EventRecord()
-            {
-                ListingId = 2,
-                Title = "Event2",
-                Description = "A very fun event",
-                StartTime = new DateTime(2020, 3, 7, 2, 45, 0),
-                EndTime = new DateTime(2020, 3, 7, 6, 30, 0),
-                LocX = 50.9,
-                LocY = 79.9,
-                UserId = 1 // get User id
-            };
 
             TestEventList = new List<EventRecord>();
-            TestEventList.Add(test_event_1);
-            TestEventList.Add(test_event_2);
 
-            user_repo.PostNewUser(test_user);
-            event_repo.PostNewEvent(test_event_1);
-            event_repo.PostNewEvent(test_event_2);
+            //TODO: build json file from existing SQL database
+            String user_json = "[]";
+            String events_json = "[]";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
+                {
+                    conn.Open();
+                    String AddUserQuery = @"select * into cn.Users from OPENJSON (@json)";
+                    String AddEventsQuery = @"select * into cn.Events from OPENJSON (@json)";
+                    using (SqlCommand cmd = new SqlCommand(AddUserQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@json", user_json);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                    using (SqlCommand cmd = new SqlCommand(AddEventsQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@json", events_json);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine("Error encountered while setting up sql test");
+            }
+
+
         }
 
-        [ClassCleanup]
-        public void teardown()
+        [TestCleanup]
+        public void Cleanup()
         {
-            EventRepository event_repo = new EventRepository();
-            UserRepository user_repo = new UserRepository();
-
-            event_repo.ClearEvents();
-            user_repo.ClearUsers();
             TestEventList.Clear();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(backend.Properties.Resources.sqlconnection))
+                {
+                    conn.Open();
+                    String DeleteUserQuery = @"delete from cn.Users";
+                    String DeleteEventsQuery = @"delete from cn.Events";
+                    using (SqlCommand cmd = new SqlCommand(DeleteUserQuery, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    using (SqlCommand cmd = new SqlCommand(DeleteEventsQuery, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine("Error encountered while tearing down sql test");
+            }
         }
 
         [TestMethod]
@@ -115,7 +122,7 @@ namespace backend.Tests
         {
             // Arrange
             LoginRepository loginRepo = new LoginRepository();
-            ///loginRepo.IsUserLoginValid(...);
+            loginRepo.IsUserLoginValid("TestUser", "TestPassword");
             EventRepository repo = new EventRepository();
             EventRecord record = new EventRecord()
             {
@@ -126,7 +133,6 @@ namespace backend.Tests
                 EndTime = new DateTime(2020, 3, 15, 3, 0, 0),
                 LocX = 30.5,
                 LocY = 120.7,
-                UserId = 1
             };
 
             // Act
@@ -141,6 +147,7 @@ namespace backend.Tests
         {
             // Arrange
             LoginRepository loginRepo = new LoginRepository();
+            loginRepo.IsUserLoginValid("TestUser", "TestPassword");
             EventRepository repo = new EventRepository();
             EventRecord record = new EventRecord()
             {
@@ -203,12 +210,12 @@ namespace backend.Tests
             results = repo.GetEventsByTimeRange(start, finish);
             
             // Assert
-            Assert.AreEqual(results.Count, expectedSize);
+            Assert.AreEqual(expectedSize, results.Count);
             for (int i = 0; i < expectedSize; i++)
             {
-                Assert.AreEqual(results[i].ListingId, expectedRecords[i].ListingId);
-                Assert.AreEqual(results[i].Title, expectedRecords[i].Title);
-                Assert.AreEqual(results[i].Description, expectedRecords[i].Description);
+                Assert.AreEqual(expectedRecords[i].ListingId, results[i].ListingId);
+                Assert.AreEqual(expectedRecords[i].Title, results[i].Title);
+                Assert.AreEqual(expectedRecords[i].Description, results[i].Description);
             }
         }
 
@@ -237,6 +244,7 @@ namespace backend.Tests
 
             // Act
             List<EventRecord> records = repo.GetEventsByUserId(user_id);
+            Console.WriteLine("HEllo?");
 
             // Assert
             Assert.AreEqual(expectedEvents.Count, records.Count);
