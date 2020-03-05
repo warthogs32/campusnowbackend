@@ -61,7 +61,7 @@ namespace backend.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data Source=atascadero.jj-jj.org,3184;Initial Catalog=307_maps;User ID=2202_csc307g3;Password=32warthogs29;.
+        ///   Looks up a localized string similar to Data Source=34.82.221.55,1433;Initial Catalog=307_maps;User ID=2202_csc307g3;Password=32warthogs29;.
         /// </summary>
         internal static string sqlconnection {
             get {
