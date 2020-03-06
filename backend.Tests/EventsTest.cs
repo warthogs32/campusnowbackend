@@ -12,6 +12,7 @@ namespace backend.Tests
     public class EventsTest
     {
         private List<EventRecord> TestEventList;
+        private List<UserRecord> TestUserList;
 
         [TestInitialize]
         //TODO: Find a way to reset auto-inc and initialize records
@@ -22,6 +23,10 @@ namespace backend.Tests
             LoginRepository login_repo = new LoginRepository(true);
             EventRecord event_record;
             UserRecord user_record = new UserRecord()
+
+            TestEventList = new List<EventRecord>();
+            TestUserList = new List<UserRecord>();
+            TestUserList.Add(new UserRecord()
             {
                 UserName = "TestUser",
                 Password = "TestPass",
@@ -30,9 +35,20 @@ namespace backend.Tests
                 JoinDate = DateTime.Now,
                 IsAdmin = false
             };
+            });
+            TestUserList.Add(new UserRecord()
+            {
+                UserName = "User2",
+                Password = "Pass2",
+                FirstName = "Barrack",
+                LastName = "Obama",
+                JoinDate = DateTime.Now,
+                IsAdmin = true
+            });
 
             TestEventList = new List<EventRecord>();
             event_record = new EventRecord()
+            TestEventList.Add(new EventRecord()
             {
                 ListingId = 1,
                 Title = "TestEvent",
@@ -45,6 +61,8 @@ namespace backend.Tests
             };
             TestEventList.Add(event_record);
             event_record = new EventRecord()
+            });
+            TestEventList.Add(new EventRecord()
             {
                 ListingId = 2,
                 Title = "SecondEvent",
@@ -56,13 +74,19 @@ namespace backend.Tests
                 UserId = 1
             };
             TestEventList.Add(event_record);
+            });
             user_repo.ResetAutoIncrement();
             event_repo.ResetAutoIncrement();
 
             user_repo.PostNewUser(user_record);
             login_repo.IsUserLoginValid("TestUser", "TestPass");
+            foreach (UserRecord record in TestUserList)
+            {
+                user_repo.PostNewUser(record);
+            }
             foreach (EventRecord record in TestEventList)
             {
+                login_repo.IsUserLoginValid("TestUser", "TestPass");
                 event_repo.PostNewEvent(record);
             }
         }
@@ -241,6 +265,84 @@ namespace backend.Tests
                 Assert.AreEqual(expectedEvents[i].StartTime, records[i].StartTime);
                 Assert.AreEqual(expectedEvents[i].EndTime, records[i].EndTime);
             }
+        }
+
+        [TestMethod]
+        public void testIsUserLoginValid()
+        {
+            // Arrange
+            LoginRepository loginRepo = new LoginRepository(true);
+            loginRepo.IsUserLoginValid("TestUser", "TestPass");
+            EventRepository repo = new EventRepository(true);
+            EventRecord record = TestEventList[0];
+
+            // Act
+            bool resultValid = repo.DoesEventBelongToUser(record.ListingId);
+
+            // Assert
+            Assert.IsTrue(resultValid);
+        }
+
+        [TestMethod]
+        public void testIsUserLoginInvalid()
+        {
+            // Arrange
+            LoginRepository loginRepo = new LoginRepository(true);
+            loginRepo.IsUserLoginValid("User2", "Pass2");
+            EventRepository repo = new EventRepository(true);
+            EventRecord record = TestEventList[0];
+
+            // Act
+            bool resultInvalid = repo.DoesEventBelongToUser(record.ListingId);
+
+            // Assert
+            Assert.IsFalse(resultInvalid);
+        }
+
+        [TestMethod]
+        public void testPostNewUser()
+        {
+            // Arrange
+            LoginRepository loginRepo = new LoginRepository(true);
+            UserRepository userRepo = new UserRepository(true);
+            UserRecord user = new UserRecord()
+            {
+                UserName = "CalPoly",
+                Password = "Mustang",
+                JoinDate = DateTime.Now,
+                FirstName = "Joe",
+                LastName = "Garcia",
+                IsAdmin = false
+            };
+
+            // Act
+            bool result = userRepo.PostNewUser(user);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void testPostDuplicateUser()
+        {
+            // Arrange
+            LoginRepository loginRepo = new LoginRepository(true);
+            UserRepository userRepo = new UserRepository(true);
+            UserRecord user = new UserRecord()
+            {
+                UserName = "TestUser",
+                Password = "OtherPass",
+                JoinDate = DateTime.Now,
+                FirstName = "Jason",
+                LastName = "Borne",
+                IsAdmin = false
+            };
+
+            // Act
+            bool result = userRepo.PostNewUser(user);
+
+            // Assert
+            Assert.IsFalse(result);
         }
     }
 }
