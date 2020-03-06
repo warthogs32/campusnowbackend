@@ -21,7 +21,6 @@ namespace backend.Tests
             UserRepository user_repo = new UserRepository(true);
             LoginRepository login_repo = new LoginRepository(true);
             EventRecord event_record;
-            UserRecord user_record = new UserRecord()
 
             TestEventList = new List<EventRecord>();
             TestUserList = new List<UserRecord>();
@@ -33,7 +32,6 @@ namespace backend.Tests
                 LastName = "Smith",
                 JoinDate = DateTime.Now,
                 IsAdmin = false
-            };
             });
             TestUserList.Add(new UserRecord()
             {
@@ -46,7 +44,6 @@ namespace backend.Tests
             });
 
             TestEventList = new List<EventRecord>();
-            event_record = new EventRecord()
             TestEventList.Add(new EventRecord()
             {
                 ListingId = 1,
@@ -57,9 +54,6 @@ namespace backend.Tests
                 LocX = 35.3,
                 LocY = -120.7,
                 UserId = 1
-            };
-            TestEventList.Add(event_record);
-            event_record = new EventRecord()
             });
             TestEventList.Add(new EventRecord()
             {
@@ -71,14 +65,10 @@ namespace backend.Tests
                 LocX = 35.7,
                 LocY = -121,
                 UserId = 1
-            };
-            TestEventList.Add(event_record);
             });
             user_repo.ResetAutoIncrement();
             event_repo.ResetAutoIncrement();
 
-            user_repo.PostNewUser(user_record);
-            login_repo.IsUserLoginValid("TestUser", "TestPass");
             foreach (UserRecord record in TestUserList)
             {
                 user_repo.PostNewUser(record);
