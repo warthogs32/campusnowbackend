@@ -15,7 +15,6 @@ namespace backend.Tests
         private List<UserRecord> TestUserList;
 
         [TestInitialize]
-        //TODO: Find a way to reset auto-inc and initialize records
         public void Initialize()
         {
             EventRepository event_repo = new EventRepository(true);
