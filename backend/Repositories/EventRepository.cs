@@ -23,7 +23,7 @@ namespace backend.Repositories
                 _sqlConnectionString = Properties.Resources.sqlconnection;
             }
         }
-        private bool DoesEventBelongToUser(int currentEventId)
+        public bool DoesEventBelongToUser(int currentEventId)
         {
             bool permit;
             using(SqlConnection conn = new SqlConnection(_sqlConnectionString))
