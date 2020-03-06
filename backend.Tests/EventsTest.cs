@@ -17,10 +17,9 @@ namespace backend.Tests
         [TestInitialize]
         public void Initialize()
         {
-            EventRepository event_repo = new EventRepository(true);
-            UserRepository user_repo = new UserRepository(true);
-            LoginRepository login_repo = new LoginRepository(true);
-            EventRecord event_record;
+            EventRepository eventRepo = new EventRepository(true);
+            UserRepository userRepo = new UserRepository(true);
+            LoginRepository loginRepo = new LoginRepository(true);
 
             TestEventList = new List<EventRecord>();
             TestUserList = new List<UserRecord>();
@@ -66,17 +65,17 @@ namespace backend.Tests
                 LocY = -121,
                 UserId = 1
             });
-            user_repo.ResetAutoIncrement();
-            event_repo.ResetAutoIncrement();
+            userRepo.ResetAutoIncrement();
+            eventRepo.ResetAutoIncrement();
 
             foreach (UserRecord record in TestUserList)
             {
-                user_repo.PostNewUser(record);
+                userRepo.PostNewUser(record);
             }
             foreach (EventRecord record in TestEventList)
             {
-                login_repo.IsUserLoginValid("TestUser", "TestPass");
-                event_repo.PostNewEvent(record);
+                loginRepo.IsUserLoginValid("TestUser", "TestPass");
+                eventRepo.PostNewEvent(record);
             }
         }
 
