@@ -96,8 +96,7 @@ namespace backend.Repositories
                 using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
                 {
                     conn.Open();
-                    string ValidateTokenQuery = @"select * from cn.logout_tokens
-	                where token = @token;";
+                    string ValidateTokenQuery = @"select * from cn.logout_tokens where token = @token;";
                     using(SqlCommand cmd = new SqlCommand(ValidateTokenQuery, conn))
                     {
                         cmd.Parameters.AddWithValue("@token", token.Substring(7));

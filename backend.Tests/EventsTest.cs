@@ -257,7 +257,7 @@ namespace backend.Tests
         }
 
         [TestMethod]
-        public void testIsUserLoginValid()
+        public void testDoesEventBelongToUserValid()
         {
             // Arrange
             LoginRepository loginRepo = new LoginRepository(true);
@@ -273,7 +273,7 @@ namespace backend.Tests
         }
 
         [TestMethod]
-        public void testIsUserLoginInvalid()
+        public void testDoesEventBelongToUserInvalid()
         {
             // Arrange
             LoginRepository loginRepo = new LoginRepository(true);
@@ -332,6 +332,32 @@ namespace backend.Tests
 
             // Assert
             Assert.IsFalse(result);
+        }
+        [TestMethod]
+        public void TestIsUserLoginValid()
+        {
+            // Arrange
+            LoginRepository repo = new LoginRepository(true);
+            String validUser1 = "TestUser";
+            String validPass1 = "TestPass";
+            String validUser2 = "User2";
+            String validPass2 = "Pass2";
+            String validUser3 = "TestUser";
+            String invalidPass3 = "Wrong Password";
+            String invalidUser4 = "UnknownUser";
+            String invalidPass4 = "Pass2";
+
+            // Act
+            bool result1 = repo.IsUserLoginValid(validUser1, validPass1);
+            bool result2 = repo.IsUserLoginValid(validUser2, validPass2);
+            bool result3 = repo.IsUserLoginValid(validUser3, invalidPass3);
+            bool result4 = repo.IsUserLoginValid(invalidUser4, invalidPass4);
+
+            // Assert
+            Assert.IsTrue(result1);
+            Assert.IsTrue(result2);
+            Assert.IsFalse(result3);
+            Assert.IsFalse(result4);
         }
     }
 }
