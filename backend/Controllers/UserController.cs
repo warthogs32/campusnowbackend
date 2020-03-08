@@ -17,7 +17,7 @@ namespace backend.Controllers
     [ExcludeFromCodeCoverage]
     [RoutePrefix("user/register")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class UserRegistrationController : ApiController
+    public class UserController : ApiController
     {
         private UserRepository _userRepo = new UserRepository();
 

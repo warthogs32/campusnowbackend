@@ -537,7 +537,7 @@
             </summary>
             <returns>True for success, false for failure.</returns>
         </member>
-        <member name="M:backend.Controllers.UserRegistrationController.PostNewUser(backend.DTOs.PostNewUserRequestDTO)">
+        <member name="M:backend.Controllers.UserController.PostNewUser(backend.DTOs.PostNewUserRequestDTO)">
             <summary>
             Register a new user.
             </summary>
