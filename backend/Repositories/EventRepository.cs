@@ -325,7 +325,6 @@ namespace backend.Repositories
             }
             else
             {
-                Console.WriteLine("You cannot delete all users from the production database");
                 return false;
             }
         }
@@ -354,7 +353,6 @@ namespace backend.Repositories
             }
             else
             {
-                Console.WriteLine("You cannot reset an identity in the production database");
                 return false;
             }
         }
