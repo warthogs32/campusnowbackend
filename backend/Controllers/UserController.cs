@@ -25,6 +25,7 @@ namespace backend.Controllers
         /// <returns>True for success, false for post failure.</returns>
         [Route("addBookmark/")]
         [ResponseType(typeof(AddNewBookmarkResponseDTO))]
+        [Authorize]
         [HttpPost]
         public AddNewBookmarkResponseDTO PostAddNewBookmark([FromBody]AddNewBookmarkRequestDTO addBookmarkRequest)
         {
@@ -45,6 +46,7 @@ namespace backend.Controllers
         /// <returns>List of bookmarked event records.</returns>
         [Route("getAllBookmarkedEvents/")]
         [ResponseType(typeof(GetAllEventsResponseDTO))]
+        [Authorize]
         [HttpGet]
         public GetBookmarkedEventsResponseDTO GetAllBookmarkedEvents([FromBody]GetBookmarkedEventsRequestDTO user)
         {
