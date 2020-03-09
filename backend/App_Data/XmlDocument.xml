@@ -537,6 +537,20 @@
             </summary>
             <returns>True for success, false for failure.</returns>
         </member>
+        <member name="M:backend.Controllers.UserController.AddNewBookmark(backend.DTOs.AddNewBookmarkRequestDTO)">
+            <summary>
+            Creates an event bookmark for a given user
+            </summary>
+            <param name="addBookmarkRequest"></param>
+            <returns>True for success, false for post failure.</returns>
+        </member>
+        <member name="M:backend.Controllers.UserController.GetAllEvents(backend.DTOs.GetBookmarkedEventsRequestDTO)">
+            <summary>
+            Gets all of a user's bookmarked events
+            </summary>
+            <param name="user"></param>
+            <returns>List of bookmarked event records.</returns>
+        </member>
         <member name="M:backend.Controllers.UserRegistrationController.PostNewUser(backend.DTOs.PostNewUserRequestDTO)">
             <summary>
             Register a new user.

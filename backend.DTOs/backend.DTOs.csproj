@@ -40,6 +40,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddNewBookmarkRequestDTO.cs" />
+    <Compile Include="AddNewBookmarkResponseDTO.cs" />
+    <Compile Include="GetBookmarkedEventsResponseDTO.cs" />
+    <Compile Include="GetBookmarkedEventsRequestDTO.cs" />
     <Compile Include="DeleteEventRequestDTO.cs" />
     <Compile Include="DeleteEventResponseDTO.cs" />
     <Compile Include="EventRecordDTO.cs" />
