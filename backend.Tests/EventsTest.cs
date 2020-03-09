@@ -30,8 +30,9 @@ namespace backend.Tests
                 FirstName = "John",
                 LastName = "Smith",
                 JoinDate = DateTime.Now,
-                IsAdmin = false
-            });
+                IsAdmin = false,
+                UserId = 1
+            }) ;
             TestUserList.Add(new UserRecord()
             {
                 UserName = "User2",
@@ -39,7 +40,8 @@ namespace backend.Tests
                 FirstName = "Barrack",
                 LastName = "Obama",
                 JoinDate = DateTime.Now,
-                IsAdmin = true
+                IsAdmin = true,
+                UserId = 2
             });
 
             TestEventList = new List<EventRecord>();
@@ -76,6 +78,7 @@ namespace backend.Tests
             {
                 loginRepo.IsUserLoginValid("TestUser", "TestPass");
                 eventRepo.PostNewEvent(record);
+                userRepo.AddBookmark(TestUserList[0], record);
             }
         }
 
@@ -86,6 +89,7 @@ namespace backend.Tests
             EventRepository event_repo = new EventRepository(true);
             UserRepository user_repo = new UserRepository(true);
 
+            user_repo.ResetBookmarks();
             event_repo.ResetEvents();
             user_repo.ResetUsers();
         }
@@ -357,6 +361,42 @@ namespace backend.Tests
             Assert.IsTrue(result2);
             Assert.IsFalse(result3);
             Assert.IsFalse(result4);
+        }
+
+        [TestMethod]
+        public void TestAddBookmark()
+        {
+            // Arrange
+            UserRepository repo = new UserRepository(true);
+
+            // Act
+            bool result = repo.AddBookmark(TestUserList[1], TestEventList[0]);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void TestGetBookmarkedEvents()
+        {
+            // Arrange
+            UserRepository repo = new UserRepository(true);
+            List<EventRecord> expected1 = TestEventList;
+            List<EventRecord> expected2 = new List<EventRecord>();
+
+            // Act
+            List<EventRecord> result1 = repo.GetBookmarkedEvents(TestUserList[0]);
+            List<EventRecord> result2 = repo.GetBookmarkedEvents(TestUserList[1]);
+
+            // Assert
+            Assert.AreEqual(expected1.Count, result1.Count);
+            Assert.AreEqual(expected2.Count, result2.Count);
+            for (int i = 0; i < expected1.Count; i++)
+            {
+                Assert.AreEqual(expected1[i].ListingId, result1[i].ListingId);
+                Assert.AreEqual(expected1[i].Title, result1[i].Title);
+                Assert.AreEqual(expected1[i].Description, result1[i].Description);
+            }
         }
     }
 }
