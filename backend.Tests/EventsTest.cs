@@ -78,7 +78,7 @@ namespace backend.Tests
             {
                 loginRepo.IsUserLoginValid("TestUser", "TestPass");
                 eventRepo.PostNewEvent(record);
-                userRepo.AddBookmark(TestUserList[0], record);
+                userRepo.AddNewBookmark(TestUserList[0], record);
             }
         }
 
@@ -370,7 +370,7 @@ namespace backend.Tests
             UserRepository repo = new UserRepository(true);
 
             // Act
-            bool result = repo.AddBookmark(TestUserList[1], TestEventList[0]);
+            bool result = repo.AddNewBookmark(TestUserList[1], TestEventList[0]);
 
             // Assert
             Assert.IsTrue(result);
@@ -385,8 +385,8 @@ namespace backend.Tests
             List<EventRecord> expected2 = new List<EventRecord>();
 
             // Act
-            List<EventRecord> result1 = repo.GetBookmarkedEvents(TestUserList[0]);
-            List<EventRecord> result2 = repo.GetBookmarkedEvents(TestUserList[1]);
+            List<EventRecord> result1 = repo.GetAllBookmarkedEvents(TestUserList[0]);
+            List<EventRecord> result2 = repo.GetAllBookmarkedEvents(TestUserList[1]);
 
             // Assert
             Assert.AreEqual(expected1.Count, result1.Count);

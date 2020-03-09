@@ -88,6 +88,7 @@ namespace backend.Repositories
             }
         }
 
+        [ExcludeFromCodeCoverage]
         public static bool IsTokenBlacklisted(string token)
         {
             try 

@@ -496,14 +496,14 @@
             <param name="newEvent"></param>
             <returns>True for success, false for post failure.</returns>
         </member>
-        <member name="M:backend.Controllers.EventController.Put(backend.DTOs.UpdateEventRequestDTO)">
+        <member name="M:backend.Controllers.EventController.PutUpdateEvent(backend.DTOs.UpdateEventRequestDTO)">
             <summary>
             Modifies an existing event.
             </summary>
             <param name="updateEventRequest"></param>
             <returns>True for success, false for update failure.</returns>
         </member>
-        <member name="M:backend.Controllers.EventController.Delete(backend.DTOs.DeleteEventRequestDTO)">
+        <member name="M:backend.Controllers.EventController.DeleteEvent(backend.DTOs.DeleteEventRequestDTO)">
             <summary>
             Deletes an event.
             </summary>
@@ -537,14 +537,14 @@
             </summary>
             <returns>True for success, false for failure.</returns>
         </member>
-        <member name="M:backend.Controllers.UserController.AddNewBookmark(backend.DTOs.AddNewBookmarkRequestDTO)">
+        <member name="M:backend.Controllers.UserController.PostAddNewBookmark(backend.DTOs.AddNewBookmarkRequestDTO)">
             <summary>
             Creates an event bookmark for a given user
             </summary>
             <param name="addBookmarkRequest"></param>
             <returns>True for success, false for post failure.</returns>
         </member>
-        <member name="M:backend.Controllers.UserController.GetAllEvents(backend.DTOs.GetBookmarkedEventsRequestDTO)">
+        <member name="M:backend.Controllers.UserController.GetAllBookmarkedEvents(backend.DTOs.GetBookmarkedEventsRequestDTO)">
             <summary>
             Gets all of a user's bookmarked events
             </summary>

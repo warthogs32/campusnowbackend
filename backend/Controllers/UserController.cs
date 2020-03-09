@@ -1,29 +1,18 @@
-﻿using System;
+﻿using backend.DTOs;
+using backend.Models;
+using backend.Repositories;
+using backend.Transformers;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using backend.DTOs;
-using backend.Repositories;
-using System.Web.Http.Description;
-using backend.Models;
-using backend.Transformers;
-using System.Web.Http.Cors;
-using System.Diagnostics.CodeAnalysis;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Description;
-using System.Diagnostics.CodeAnalysis;
-using backend.Repositories;
-using backend.DTOs;
-using backend.Models;
-using backend.Transformers;
 
 namespace backend.Controllers
 {
     [ExcludeFromCodeCoverage]
-    [RoutePrefix("user/register")]
+    [RoutePrefix("api/user")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UserController : ApiController
     {
@@ -37,12 +26,12 @@ namespace backend.Controllers
         [Route("addBookmark/")]
         [ResponseType(typeof(AddNewBookmarkResponseDTO))]
         [HttpPost]
-        public AddNewBookmarkResponseDTO AddNewBookmark([FromBody]AddNewBookmarkRequestDTO addBookmarkRequest)
+        public AddNewBookmarkResponseDTO PostAddNewBookmark([FromBody]AddNewBookmarkRequestDTO addBookmarkRequest)
         {
             EventRecord eventRecord = EventRecordTransformer.Transform(addBookmarkRequest.EventRecord);
             UserRecord userRecord = UserRecordTransformer.Transform(addBookmarkRequest.UserRecord);
 
-            bool status = _userRepo.AddBookmark(userRecord, eventRecord);
+            bool status = _userRepo.AddNewBookmark(userRecord, eventRecord);
             return new AddNewBookmarkResponseDTO()
             {
                 Status = status
@@ -54,14 +43,14 @@ namespace backend.Controllers
         /// </summary>
         /// <param name="user"></param>
         /// <returns>List of bookmarked event records.</returns>
-        [Route("getAllEvents/")]
+        [Route("getAllBookmarkedEvents/")]
         [ResponseType(typeof(GetAllEventsResponseDTO))]
         [HttpGet]
-        public GetBookmarkedEventsResponseDTO GetAllEvents([FromBody]GetBookmarkedEventsRequestDTO user)
+        public GetBookmarkedEventsResponseDTO GetAllBookmarkedEvents([FromBody]GetBookmarkedEventsRequestDTO user)
         {
             UserRecord userRecord = UserRecordTransformer.Transform(user.User);
 
-            List<EventRecord> allEvents = _userRepo.GetBookmarkedEvents(userRecord);
+            List<EventRecord> allEvents = _userRepo.GetAllBookmarkedEvents(userRecord);
             return new GetBookmarkedEventsResponseDTO()
             {
                 EventRecords = allEvents.Select(x => EventRecordTransformer.Transform(x)).ToList()

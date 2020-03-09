@@ -86,7 +86,7 @@ namespace backend.Controllers
         [Authorize]
         [ResponseType(typeof(UpdateEventResponseDTO))]
         [Route("updateEvent/")]
-        public UpdateEventResponseDTO Put([FromBody]UpdateEventRequestDTO updateEventRequest)
+        public UpdateEventResponseDTO PutUpdateEvent([FromBody]UpdateEventRequestDTO updateEventRequest)
         {
             bool updateEventResponse = _eventRepo.UpdateEvent(EventRecordTransformer.Transform(updateEventRequest.UpdatedEvent));
             return new UpdateEventResponseDTO
@@ -104,7 +104,7 @@ namespace backend.Controllers
         [Authorize]
         [ResponseType(typeof(DeleteEventResponseDTO))]
         [Route("deleteEvent/")]
-        public DeleteEventResponseDTO Delete([FromBody]DeleteEventRequestDTO deleteEventRequest)
+        public DeleteEventResponseDTO DeleteEvent([FromBody]DeleteEventRequestDTO deleteEventRequest)
         {
             bool deleteEventResponse = _eventRepo.DeleteEvent(deleteEventRequest.EventIdToDelete);
             return new DeleteEventResponseDTO

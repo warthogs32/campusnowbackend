@@ -19,7 +19,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace backend.Controllers
 {
     [ExcludeFromCodeCoverage]
-    [RoutePrefix("user/login")]
+    [RoutePrefix("api/login")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class LoginController : ApiController
     {

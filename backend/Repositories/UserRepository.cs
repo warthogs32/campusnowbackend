@@ -49,7 +49,7 @@ namespace backend.Repositories
             return true;
         }
 
-        public bool AddBookmark (UserRecord user, EventRecord record)
+        public bool AddNewBookmark (UserRecord user, EventRecord record)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace backend.Repositories
         }
       
 
-        public List<EventRecord> GetBookmarkedEvents(UserRecord user)
+        public List<EventRecord> GetAllBookmarkedEvents(UserRecord user)
         {
             List<EventRecord> events = new List<EventRecord>();
             try
