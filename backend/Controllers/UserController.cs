@@ -23,7 +23,7 @@ using backend.Transformers;
 namespace backend.Controllers
 {
     [ExcludeFromCodeCoverage]
-    [RoutePrefix("api/user")]
+    [RoutePrefix("user/register")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UserController : ApiController
     {
