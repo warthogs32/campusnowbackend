@@ -149,7 +149,7 @@ namespace backend.Repositories
 
         public bool UpdateEvent(EventRecord updated)
         {
-            if (DoesEventBelongToUser(updated.ListingId))
+            if (DoesEventBelongToUser(updated.ListingId) || LoginRepository.CurrentUser.IsAdmin)
             {
                 try
                 {
@@ -187,7 +187,7 @@ namespace backend.Repositories
 
         public bool DeleteEvent(int eventId)
         {
-            if (DoesEventBelongToUser(eventId))
+            if (DoesEventBelongToUser(eventId) || LoginRepository.CurrentUser.IsAdmin)
             {
                 try
                 {
