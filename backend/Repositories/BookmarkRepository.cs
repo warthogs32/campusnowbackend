@@ -22,7 +22,7 @@ namespace backend.Repositories
             }
         }
 
-        public bool AddNewBookmark(UserRecord user, EventRecord record)
+        public bool AddNewBookmark(EventRecord record)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace backend.Repositories
                     string getEventQuery = @"insert into cn.Bookmarks (UserId, Listing) values (@user, @event)";
                     using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
                     {
-                        cmd.Parameters.AddWithValue("@user", user.UserId);
+                        cmd.Parameters.AddWithValue("@user", LoginRepository.CurrentUser.UserId);
                         cmd.Parameters.AddWithValue("@event", record.ListingId);
                         cmd.ExecuteNonQuery();
                     }
@@ -45,7 +45,7 @@ namespace backend.Repositories
             }
         }
 
-        public List<EventRecord> GetAllBookmarkedEvents(UserRecord user)
+        public List<EventRecord> GetAllBookmarkedEvents()
         {
             List<EventRecord> events = new List<EventRecord>();
             try
@@ -57,7 +57,7 @@ namespace backend.Repositories
                         from cn.Bookmarks join cn.Events on ListingId = Listing where cn.Bookmarks.UserId = @user";
                     using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
                     {
-                        cmd.Parameters.AddWithValue("@user", user.UserId);
+                        cmd.Parameters.AddWithValue("@user", LoginRepository.CurrentUser.UserId);
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
@@ -114,7 +114,6 @@ namespace backend.Repositories
             }
             else
             {
-                Console.WriteLine("You cannot delete all users from the production database");
                 return false;
             }
         }
@@ -143,7 +142,6 @@ namespace backend.Repositories
             }
             else
             {
-                Console.WriteLine("You cannot reset an identity in the production database");
                 return false;
             }
         }

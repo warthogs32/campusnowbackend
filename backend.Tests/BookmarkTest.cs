@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 
 namespace backend.Tests
 {
     /// <summary>
-    /// Summary description for UserTest
+    /// Summary description for BookmarkTest
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
-    public class UserTest
+    public class BookmarkTest
     {
         
     }

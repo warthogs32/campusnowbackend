@@ -14,7 +14,6 @@ using backend.Models;
 
 namespace backend.Controllers
 {
-    [ExcludeFromCodeCoverage]
     [RoutePrefix("api/bookmark")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class BookmarkController : ApiController
@@ -22,19 +21,19 @@ namespace backend.Controllers
         private BookmarkRepository _bookmarkRepo = new BookmarkRepository();
 
         /// <summary>
-        /// Creates an event bookmark for a given user
+        /// Creates an event bookmark for current user
         /// </summary>
         /// <param name="addBookmarkRequest"></param>
         /// <returns>True for success, false for post failure.</returns>
         [Route("addBookmark/")]
         [ResponseType(typeof(AddNewBookmarkResponseDTO))]
+        [Authorize]
         [HttpPost]
         public AddNewBookmarkResponseDTO PostAddNewBookmark([FromBody]AddNewBookmarkRequestDTO addBookmarkRequest)
         {
             EventRecord eventRecord = EventRecordTransformer.Transform(addBookmarkRequest.EventRecord);
-            UserRecord userRecord = UserRecordTransformer.Transform(addBookmarkRequest.UserRecord);
 
-            bool status = _bookmarkRepo.AddNewBookmark(userRecord, eventRecord);
+            bool status = _bookmarkRepo.AddNewBookmark(eventRecord);
             return new AddNewBookmarkResponseDTO()
             {
                 Status = status
@@ -42,18 +41,16 @@ namespace backend.Controllers
         }
 
         /// <summary>
-        /// Gets all of a user's bookmarked events
+        /// Gets all of current user's bookmarked events.
         /// </summary>
-        /// <param name="user"></param>
         /// <returns>List of bookmarked event records.</returns>
         [Route("getAllBookmarkedEvents/")]
         [ResponseType(typeof(GetAllEventsResponseDTO))]
+        [Authorize]
         [HttpGet]
-        public GetBookmarkedEventsResponseDTO GetAllBookmarkedEvents([FromBody]GetBookmarkedEventsRequestDTO user)
+        public GetBookmarkedEventsResponseDTO GetAllBookmarkedEvents()
         {
-            UserRecord userRecord = UserRecordTransformer.Transform(user.User);
-
-            List<EventRecord> allEvents = _bookmarkRepo.GetAllBookmarkedEvents(userRecord);
+            List<EventRecord> allEvents = _bookmarkRepo.GetAllBookmarkedEvents();
             return new GetBookmarkedEventsResponseDTO()
             {
                 EventRecords = allEvents.Select(x => EventRecordTransformer.Transform(x)).ToList()
