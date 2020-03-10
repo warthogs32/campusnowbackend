@@ -19,6 +19,7 @@ namespace backend.Tests
         {
             EventRepository eventRepo = new EventRepository(true);
             UserRepository userRepo = new UserRepository(true);
+            BookmarkRepository bookmarkRepo = new BookmarkRepository(true);
             LoginRepository loginRepo = new LoginRepository(true);
 
             TestEventList = new List<EventRecord>();
@@ -69,6 +70,7 @@ namespace backend.Tests
             });
             userRepo.ResetAutoIncrement();
             eventRepo.ResetAutoIncrement();
+            bookmarkRepo.ResetAutoIncrement();
 
             foreach (UserRecord record in TestUserList)
             {
@@ -78,7 +80,7 @@ namespace backend.Tests
             {
                 loginRepo.IsUserLoginValid("TestUser", "TestPass");
                 eventRepo.PostNewEvent(record);
-                userRepo.AddNewBookmark(TestUserList[0], record);
+                bookmarkRepo.AddNewBookmark(TestUserList[0], record);
             }
         }
 
@@ -88,8 +90,9 @@ namespace backend.Tests
             TestEventList.Clear();
             EventRepository event_repo = new EventRepository(true);
             UserRepository user_repo = new UserRepository(true);
+            BookmarkRepository bookmark_repo = new BookmarkRepository(true);
 
-            user_repo.ResetBookmarks();
+            bookmark_repo.ResetBookmarks();
             event_repo.ResetEvents();
             user_repo.ResetUsers();
         }
@@ -367,7 +370,7 @@ namespace backend.Tests
         public void TestAddBookmark()
         {
             // Arrange
-            UserRepository repo = new UserRepository(true);
+            BookmarkRepository repo = new BookmarkRepository(true);
 
             // Act
             bool result = repo.AddNewBookmark(TestUserList[1], TestEventList[0]);
@@ -380,7 +383,7 @@ namespace backend.Tests
         public void TestGetBookmarkedEvents()
         {
             // Arrange
-            UserRepository repo = new UserRepository(true);
+            BookmarkRepository repo = new BookmarkRepository(true);
             List<EventRecord> expected1 = TestEventList;
             List<EventRecord> expected2 = new List<EventRecord>();
 

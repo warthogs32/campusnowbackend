@@ -476,6 +476,20 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
+        <member name="M:backend.Controllers.BookmarkController.PostAddNewBookmark(backend.DTOs.AddNewBookmarkRequestDTO)">
+            <summary>
+            Creates an event bookmark for a given user
+            </summary>
+            <param name="addBookmarkRequest"></param>
+            <returns>True for success, false for post failure.</returns>
+        </member>
+        <member name="M:backend.Controllers.BookmarkController.GetAllBookmarkedEvents(backend.DTOs.GetBookmarkedEventsRequestDTO)">
+            <summary>
+            Gets all of a user's bookmarked events
+            </summary>
+            <param name="user"></param>
+            <returns>List of bookmarked event records.</returns>
+        </member>
         <member name="M:backend.Controllers.EventController.GetAllEvents">
             <summary>
             Retrieves all events.
@@ -536,20 +550,6 @@
             User logout
             </summary>
             <returns>True for success, false for failure.</returns>
-        </member>
-        <member name="M:backend.Controllers.UserController.PostAddNewBookmark(backend.DTOs.AddNewBookmarkRequestDTO)">
-            <summary>
-            Creates an event bookmark for a given user
-            </summary>
-            <param name="addBookmarkRequest"></param>
-            <returns>True for success, false for post failure.</returns>
-        </member>
-        <member name="M:backend.Controllers.UserController.GetAllBookmarkedEvents(backend.DTOs.GetBookmarkedEventsRequestDTO)">
-            <summary>
-            Gets all of a user's bookmarked events
-            </summary>
-            <param name="user"></param>
-            <returns>List of bookmarked event records.</returns>
         </member>
         <member name="M:backend.Controllers.UserController.PostNewUser(backend.DTOs.PostNewUserRequestDTO)">
             <summary>
