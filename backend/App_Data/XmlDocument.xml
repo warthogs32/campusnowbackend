@@ -550,6 +550,12 @@
             </summary>
             <returns>True for success, false for failure.</returns>
         </member>
+        <member name="M:backend.Controllers.LoginController.GetCurrentUser">
+            <summary>
+            Gets currently logged in user.
+            </summary>
+            <returns>UserRecord of current user, otherwise empty user object.</returns>
+        </member>
         <member name="M:backend.Controllers.UserController.PostNewUser(backend.DTOs.PostNewUserRequestDTO)">
             <summary>
             Register a new user.

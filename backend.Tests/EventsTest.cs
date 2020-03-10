@@ -367,6 +367,7 @@ namespace backend.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void TestAddBookmark()
         {
             // Arrange
@@ -380,6 +381,7 @@ namespace backend.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void TestGetBookmarkedEvents()
         {
             // Arrange

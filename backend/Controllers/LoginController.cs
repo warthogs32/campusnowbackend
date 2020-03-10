@@ -13,6 +13,7 @@ using backend.DTOs;
 using System.Web.Http;
 using backend.Repositories;
 using System.Web.Http.Description;
+using backend.Transformers;
 using System.Web.Http.Cors;
 using System.Diagnostics.CodeAnalysis;
 
@@ -73,6 +74,21 @@ namespace backend.Controllers
             return new LogoutResponseDTO()
             { 
                 status = LoginRepository.Logout(LoginRepository.CurrentUser.Token)
+            };
+        }
+
+        /// <summary>
+        /// Gets currently logged in user.
+        /// </summary>
+        /// <returns>UserRecord of current user, otherwise empty user object.</returns>
+        [Route("getCurrentUser/")]
+        [ResponseType(typeof(GetCurrentUserResponseDTO))]
+        [HttpGet]
+        public GetCurrentUserResponseDTO GetCurrentUser()
+        {
+            return new GetCurrentUserResponseDTO()
+            {
+                CurrentUser = UserRecordTransformer.Transform(LoginRepository.CurrentUser)
             };
         }
 

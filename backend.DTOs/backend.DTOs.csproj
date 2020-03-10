@@ -49,6 +49,7 @@
     <Compile Include="EventRecordDTO.cs" />
     <Compile Include="GetAllEventsRequestDTO.cs" />
     <Compile Include="GetAllEventsResponseDTO.cs" />
+    <Compile Include="GetCurrentUserResponseDTO.cs" />
     <Compile Include="GetEventByIdRequestDTO.cs" />
     <Compile Include="GetEventByIdResponseDTO.cs" />
     <Compile Include="GetEventsByTimeRangeRequestDTO.cs" />

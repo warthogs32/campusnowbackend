@@ -23,7 +23,16 @@ namespace backend.Repositories
             }
         }
 
-        public static UserRecord CurrentUser = new UserRecord();
+        private static UserRecord _currentUser = new UserRecord();
+        public static UserRecord CurrentUser
+        {
+            get => _currentUser;
+            set
+            {
+                _currentUser = value;
+            }
+        }
+
         public bool IsUserLoginValid(string userName, string password)
         {
             bool exists;
