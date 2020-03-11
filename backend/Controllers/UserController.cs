@@ -34,5 +34,21 @@ namespace backend.Controllers
                 Status = newUserResponse
             };
         }
+
+        /// <summary>
+        /// Gets a user with the given userId
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>A UserRecord of the user of the matching id</returns>
+        [HttpGet]
+        [ResponseType(typeof(GetUserByIdResponseDTO))]
+        [Route("getById/")]
+        public GetUserByIdResponseDTO GetUserById([FromUri]GetUserByIdRequestDTO userId)
+        {
+            return new GetUserByIdResponseDTO
+            {
+                UserRecord = UserRecordTransformer.Transform(_userRepo.GetUserById(userId.UserId))
+            };
+        }
     }
 }

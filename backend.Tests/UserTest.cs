@@ -124,5 +124,19 @@ namespace backend.Tests
             Assert.IsFalse(result3);
             Assert.IsFalse(result4);
         }
+        [TestMethod]
+        public void TestGetUserById()
+        {
+            // Arrange
+            UserRecord expected = users[0];
+
+            // Act
+            UserRecord result = _userRepo.GetUserById(users[0].UserId);
+
+            // Assert
+            Assert.AreEqual(expected.UserName, result.UserName);
+            Assert.AreEqual(expected.FirstName, result.FirstName);
+            Assert.AreEqual(expected.LastName, result.LastName);
+        }
     }
 }
