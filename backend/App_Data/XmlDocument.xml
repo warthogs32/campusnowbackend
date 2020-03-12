@@ -563,6 +563,13 @@
             <param name="newUserRequest"></param>
             <returns>True for success, false for failure.</returns>
         </member>
+        <member name="M:backend.Controllers.UserController.GetUserById(backend.DTOs.GetUserByIdRequestDTO)">
+            <summary>
+            Gets a user with the given userId
+            </summary>
+            <param name="userId"></param>
+            <returns>A UserRecord of the user of the matching id</returns>
+        </member>
         <member name="T:backend.Properties.Resources">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.

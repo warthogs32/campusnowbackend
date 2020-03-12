@@ -49,6 +49,36 @@ namespace backend.Repositories
             return true;
         }
 
+        public UserRecord GetUserById (int userId)
+        {
+            UserRecord retrievedUser = new UserRecord();
+            using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
+            {
+                conn.Open();
+                string getEventQuery = @"select * from cn.Users where UserId = @userId";
+                using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@userId", userId);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            retrievedUser = new UserRecord()
+                            {
+                                UserId = Int32.Parse(reader["UserId"].ToString()),
+                                UserName = reader["UserName"].ToString(),
+                                FirstName = reader["FirstName"].ToString(),
+                                LastName = reader["LastName"].ToString(),
+                                JoinDate = DateTime.Parse(reader["JoinDate"].ToString()),
+                                IsAdmin = bool.Parse(reader["isAdmin"].ToString())
+                            };
+                        }
+                    }
+                }
+            }
+            return retrievedUser;
+        }
+
         /*
          * The Methods below are only to be used for sql testing,
          * and will not work on the production database
