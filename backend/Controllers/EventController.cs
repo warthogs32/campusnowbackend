@@ -217,5 +217,32 @@ namespace backend.Controllers
                 };
             }
         }
+
+        /// <summary>
+        /// Retrieves all within a given distance from given coordinates
+        /// </summary>
+        /// <param name="region"></param>
+        /// <returns>List of event records with the radius of (X,Y).</returns>
+        [Route("getEventsInRadius/")]
+        [ResponseType(typeof(GetAllEventsResponseDTO))]
+        [HttpGet]
+        public GetEventsByRadiusResponseDTO GetEventsByRadius(GetEventsByRadiusRequestDTO region)
+        {
+            try
+            {
+                List<EventRecord> events = _eventRepo.GetEventsByRadius(region.X, region.Y, region.Radius);
+                return new GetEventsByRadiusResponseDTO()
+                {
+                    EventRecords = events.Select(x => EventRecordTransformer.Transform(x)).ToList()
+                };
+            }
+            catch (RepoException e)
+            {
+                return new GetEventsByRadiusResponseDTO()
+                {
+                    Status = e.Message
+                };
+            }
+        }
     }
 }

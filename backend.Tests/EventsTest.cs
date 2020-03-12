@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using backend.Models;
 using System.Diagnostics.CodeAnalysis;
 using backend.Repositories;
+using backend.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace backend.Tests
@@ -65,7 +66,7 @@ namespace backend.Tests
                 StartTime = new DateTime(2020, 3, 27, 4, 0, 0),
                 EndTime = new DateTime(2020, 3, 27, 7, 30, 0),
                 LocX = 35.7,
-                LocY = -121,
+                LocY = -127,
                 UserId = 1
             });
             userRepo.ResetAutoIncrement();
@@ -204,13 +205,21 @@ namespace backend.Tests
             EventRepository repo = new EventRepository(true);
             DateTime start = new DateTime(2020, 3, 1, 5, 0, 0);
             DateTime end = new DateTime(2020, 2, 25, 12, 0, 0);
-            int expectedEventCount = 0;
+            bool result;
 
             // Act
-            List<EventRecord> records = repo.GetEventsByTimeRange(start, end);
+            try
+            {
+                repo.GetEventsByTimeRange(start, end);
+                result = true;
+            }
+            catch (RepoException e)
+            {
+                result = false;
+            }
 
             // Assert
-            Assert.AreEqual(expectedEventCount, records.Count);
+            Assert.IsFalse(result);
         }
         [TestMethod]
         public void TestGetEventByUserId()
@@ -255,7 +264,7 @@ namespace backend.Tests
         }
 
         [TestMethod]
-        public void testDoesEventBelongToUserInvalid()
+        public void TestDoesEventBelongToUserInvalid()
         {
             // Arrange
             LoginRepository loginRepo = new LoginRepository(true);
@@ -268,6 +277,51 @@ namespace backend.Tests
 
             // Assert
             Assert.IsFalse(resultInvalid);
+        }
+
+        [TestMethod]
+        public void TestGetEventsByRadius()
+        {
+            // Arrange
+            EventRepository eventRepo = new EventRepository(true);
+            List<EventRecord> expected1 = new List<EventRecord>();
+            expected1.Add(TestEventList[0]);
+            List<EventRecord> expected2 = new List<EventRecord>();
+
+            // Act
+            List<EventRecord> result1 = eventRepo.GetEventsByRadius(35, -120, 1);
+            List<EventRecord> result2 = eventRepo.GetEventsByRadius(0, 0, 1);
+
+            // Assert
+            Assert.AreEqual(expected2.Count, result2.Count);
+            Assert.AreEqual(expected1.Count, result1.Count);
+            for (int i = 0; i < expected1.Count; i++)
+            {
+                Assert.AreEqual(expected1[i].Title, result1[i].Title);
+                Assert.AreEqual(expected1[i].Description, result1[i].Description);
+            }
+        }
+
+        [TestMethod]
+        public void TestInvalidRadius()
+        {
+            // Arrange
+            EventRepository eventRepo = new EventRepository(true);
+            bool result;
+
+            // Act
+            try
+            {
+                eventRepo.GetEventsByRadius(0, 0, -1);
+                result = true;
+            }
+            catch (RepoException e)
+            {
+                result = false;
+            }
+
+            // Assert
+            Assert.IsFalse(result);
         }
     }
 }
