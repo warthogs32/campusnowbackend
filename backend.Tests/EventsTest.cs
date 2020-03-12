@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using backend.Models;
 using System.Diagnostics.CodeAnalysis;
+using backend.Exceptions;
 using backend.Repositories;
 using backend.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -206,7 +207,7 @@ namespace backend.Tests
             DateTime start = new DateTime(2020, 3, 1, 5, 0, 0);
             DateTime end = new DateTime(2020, 2, 25, 12, 0, 0);
             bool result;
-
+          
             // Act
             try
             {
@@ -217,9 +218,9 @@ namespace backend.Tests
             {
                 result = false;
             }
-
-            // Assert
-            Assert.IsFalse(result);
+          
+            // Act => Assert
+            Assert.ThrowsException<RepoException>(() => repo.GetEventsByTimeRange(start, end));
         }
         [TestMethod]
         public void TestGetEventByUserId()
