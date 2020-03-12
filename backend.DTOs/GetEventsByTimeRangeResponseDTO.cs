@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace backend.DTOs
 {
-    public class GetEventsByTimeRangeResponseDTO
+    public class GetEventsByTimeRangeResponseDTO : ResponseDTO
     {
         public IList<EventRecordDTO> Events { get; set; }
     }

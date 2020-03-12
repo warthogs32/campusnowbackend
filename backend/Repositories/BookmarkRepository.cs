@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using backend.Exceptions;
 using System.Web;
 using System.Data.SqlClient;
 using backend.Models;
@@ -22,7 +23,7 @@ namespace backend.Repositories
             }
         }
 
-        public bool AddNewBookmark(EventRecord record)
+        public string AddNewBookmark(EventRecord record)
         {
             try
             {
@@ -37,11 +38,11 @@ namespace backend.Repositories
                         cmd.ExecuteNonQuery();
                     }
                 }
-                return true;
+                return string.Format("Successfully created bookmark for {0}", record.Title);
             }
             catch (SqlException e)
             {
-                return false;
+                throw new RepoException(e.Message);
             }
         }
 
@@ -81,7 +82,7 @@ namespace backend.Repositories
             }
             catch (SqlException e)
             {
-                return events;
+                throw new RepoException(e.Message);
             }
         }
 

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace backend.DTOs
 {
-    public class LogoutResponseDTO
+    public class LogoutResponseDTO : ResponseDTO
     {
-        public bool status { get; set; }
     }
 }

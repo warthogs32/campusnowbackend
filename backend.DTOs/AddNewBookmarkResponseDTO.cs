@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace backend.DTOs
 {
-    public class AddNewBookmarkResponseDTO
+    public class AddNewBookmarkResponseDTO : ResponseDTO
     {
-        public bool Status { get; set; }
     }
 }

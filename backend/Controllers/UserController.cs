@@ -4,6 +4,7 @@ using backend.Repositories;
 using backend.Transformers;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using backend.Exceptions;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -28,11 +29,21 @@ namespace backend.Controllers
         [Route("newUser/")]
         public PostNewUserResponseDTO PostNewUser([FromBody]PostNewUserRequestDTO newUserRequest)
         {
-            bool newUserResponse = _userRepo.PostNewUser(UserRecordTransformer.Transform(newUserRequest.NewUserRecord));
-            return new PostNewUserResponseDTO()
+            try
             {
-                Status = newUserResponse
-            };
+                string newUserResponse = _userRepo.PostNewUser(UserRecordTransformer.Transform(newUserRequest.NewUserRecord));
+                return new PostNewUserResponseDTO()
+                {
+                    Status = newUserResponse
+                };
+            }
+            catch(RepoException e)
+            {
+                return new PostNewUserResponseDTO()
+                {
+                    Status = e.Message
+                };
+            }
         }
 
         /// <summary>
@@ -45,10 +56,20 @@ namespace backend.Controllers
         [Route("getById/")]
         public GetUserByIdResponseDTO GetUserById([FromUri]GetUserByIdRequestDTO userId)
         {
-            return new GetUserByIdResponseDTO
+            try
             {
-                UserRecord = UserRecordTransformer.Transform(_userRepo.GetUserById(userId.UserId))
-            };
+                return new GetUserByIdResponseDTO
+                {
+                    UserRecord = UserRecordTransformer.Transform(_userRepo.GetUserById(userId.UserId))
+                };
+            }
+            catch(RepoException e)
+            {
+                return new GetUserByIdResponseDTO()
+                {
+                    Status = e.Message
+                };
+            }
         }
     }
 }

@@ -58,7 +58,7 @@
     <Compile Include="GetEventsByUserIdResponseDTO.cs" />
     <Compile Include="GetUserByIdRequestDTO.cs" />
     <Compile Include="GetUserByIdResponseDTO.cs" />
-    <Compile Include="LocationDTO.cs" />
+    <Compile Include="ResponseDTO.cs" />
     <Compile Include="LoginRequestDTO.cs" />
     <Compile Include="LoginResponseDTO.cs" />
     <Compile Include="LogoutResponseDTO.cs" />

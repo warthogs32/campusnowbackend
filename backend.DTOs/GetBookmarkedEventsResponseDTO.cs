@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace backend.DTOs
 {
-    public class GetBookmarkedEventsResponseDTO
+    public class GetBookmarkedEventsResponseDTO : ResponseDTO
     {
         public IList<EventRecordDTO> EventRecords { get; set; }
     }
