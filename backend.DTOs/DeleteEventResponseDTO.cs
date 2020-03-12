@@ -4,8 +4,7 @@ using System.Linq;
 
 namespace backend.DTOs
 {
-    public class DeleteEventResponseDTO
+    public class DeleteEventResponseDTO : ResponseDTO
     {
-        public bool Status { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using backend.Exceptions;
 using System.Linq;
 using System.Data.SqlClient;
 using System.Web;
@@ -21,7 +22,7 @@ namespace backend.Repositories
                 _sqlConnectionString = Properties.Resources.sqlconnection;
             }
         }
-        public bool PostNewUser(UserRecord newUser)
+        public string PostNewUser(UserRecord newUser)
         {
             try
             {
@@ -41,42 +42,49 @@ namespace backend.Repositories
                         cmd.ExecuteNonQuery();
                     }
                 }
+                return string.Format("Welcome {0}", newUser.FirstName);
             }
             catch (SqlException e)
             {
-                return false;
+                throw new RepoException(e.Message);
             }
-            return true;
         }
 
         public UserRecord GetUserById (int userId)
         {
-            UserRecord retrievedUser = new UserRecord();
-            using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
+            try
             {
-                conn.Open();
-                string getEventQuery = @"select * from cn.Users where UserId = @userId";
-                using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
+                UserRecord retrievedUser = new UserRecord();
+                using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
                 {
-                    cmd.Parameters.AddWithValue("@userId", userId);
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    conn.Open();
+                    string getEventQuery = @"select * from cn.Users where UserId = @userId";
+                    using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
                     {
-                        if (reader.Read())
+                        cmd.Parameters.AddWithValue("@userId", userId);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            retrievedUser = new UserRecord()
+                            if (reader.Read())
                             {
-                                UserId = Int32.Parse(reader["UserId"].ToString()),
-                                UserName = reader["UserName"].ToString(),
-                                FirstName = reader["FirstName"].ToString(),
-                                LastName = reader["LastName"].ToString(),
-                                JoinDate = DateTime.Parse(reader["JoinDate"].ToString()),
-                                IsAdmin = bool.Parse(reader["isAdmin"].ToString())
-                            };
+                                retrievedUser = new UserRecord()
+                                {
+                                    UserId = Int32.Parse(reader["UserId"].ToString()),
+                                    UserName = reader["UserName"].ToString(),
+                                    FirstName = reader["FirstName"].ToString(),
+                                    LastName = reader["LastName"].ToString(),
+                                    JoinDate = DateTime.Parse(reader["JoinDate"].ToString()),
+                                    IsAdmin = bool.Parse(reader["isAdmin"].ToString())
+                                };
+                            }
                         }
                     }
                 }
+                return retrievedUser;
             }
-            return retrievedUser;
+            catch(SqlException e)
+            {
+                throw new RepoException("user not found");
+            }
         }
 
         /*

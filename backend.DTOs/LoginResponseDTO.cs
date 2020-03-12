@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace backend.DTOs
 {
-    public class LoginResponseDTO
+    public class LoginResponseDTO : ResponseDTO
     {
         public string Token { get; set; }
-        public HttpResponseMessage responseMsg { get; set; }
+        public HttpResponseMessage ResponseMsg { get; set; }
     }
 }

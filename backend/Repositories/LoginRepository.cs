@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using backend.Exceptions;
 using System.Web;
 using System.Diagnostics.CodeAnalysis;
 using backend.Models;
@@ -74,7 +75,7 @@ namespace backend.Repositories
         }
 
         [ExcludeFromCodeCoverage]
-        public static bool Logout(string token)
+        public static string Logout(string token)
         {
             try
             {
@@ -89,11 +90,11 @@ namespace backend.Repositories
                     }
                 }
                 CurrentUser = null;
-                return true;
+                return string.Format("Successfully logged out");
             }
             catch (SqlException e)
             {
-                return false;
+                throw new RepoException(e.Message);
             }
         }
 

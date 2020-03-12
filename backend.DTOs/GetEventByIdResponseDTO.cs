@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace backend.DTOs
 {
-    public class GetEventByIdResponseDTO
+    public class GetEventByIdResponseDTO : ResponseDTO
     {
         public EventRecordDTO EventRecord { get; set; }
     }

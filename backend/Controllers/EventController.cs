@@ -10,6 +10,7 @@ using backend.DTOs;
 using System.Web.Http.Description;
 using backend.Models;
 using System.Web.Http.Cors;
+using backend.Exceptions;
 using backend.Transformers;
 using System.Web;
 using System.Diagnostics.CodeAnalysis;
@@ -32,11 +33,21 @@ namespace backend.Controllers
         [HttpGet]
         public GetAllEventsResponseDTO GetAllEvents()
         {
-            List<EventRecord> allEvents = _eventRepo.GetAllEvents();
-            return new GetAllEventsResponseDTO()
+            try
             {
-                EventRecords = allEvents.Select(x => EventRecordTransformer.Transform(x)).ToList()
-            };
+                List<EventRecord> allEvents = _eventRepo.GetAllEvents();
+                return new GetAllEventsResponseDTO()
+                {
+                    EventRecords = allEvents.Select(x => EventRecordTransformer.Transform(x)).ToList()
+                };
+            }
+            catch(RepoException e)
+            {
+                return new GetAllEventsResponseDTO()
+                {
+                    Status = e.Message
+                };
+            }
         }
 
         /// <summary>
@@ -50,12 +61,22 @@ namespace backend.Controllers
         public GetEventByIdResponseDTO GetEventById([FromUri]GetEventByIdRequestDTO eventIdRequest)
         {
             int eventId = eventIdRequest.EventId;
-            EventRecord retrievedEvent = _eventRepo.GetEventById(eventId);
-            EventRecordDTO retrievedEventDTO = EventRecordTransformer.Transform(retrievedEvent);
-            return new GetEventByIdResponseDTO()
+            try
             {
-                EventRecord = retrievedEventDTO
-            };
+                EventRecord retrievedEvent = _eventRepo.GetEventById(eventId);
+                EventRecordDTO retrievedEventDTO = EventRecordTransformer.Transform(retrievedEvent);
+                return new GetEventByIdResponseDTO()
+                {
+                    EventRecord = retrievedEventDTO
+                };
+            }
+            catch(RepoException e)
+            {
+                return new GetEventByIdResponseDTO()
+                {
+                    Status = e.Message
+                };
+            }
         }
 
         /// <summary>
@@ -70,11 +91,21 @@ namespace backend.Controllers
         public PostNewEventResponseDTO PostNewEvent([FromBody]PostNewEventRequestDTO newEvent)
         {
             //context.Request.Headers["Authorization"];
-            bool newEventResponse = _eventRepo.PostNewEvent(EventRecordTransformer.Transform(newEvent.NewEvent));
-            return new PostNewEventResponseDTO
+            try
             {
-                status = newEventResponse
-            };
+                string newEventResponse = _eventRepo.PostNewEvent(EventRecordTransformer.Transform(newEvent.NewEvent));
+                return new PostNewEventResponseDTO
+                {
+                    Status = newEventResponse
+                };
+            }
+            catch(RepoException e)
+            {
+                return new PostNewEventResponseDTO()
+                {
+                    Status = e.Message
+                };
+            }
         }
 
         /// <summary>
@@ -88,11 +119,21 @@ namespace backend.Controllers
         [Route("updateEvent/")]
         public UpdateEventResponseDTO PutUpdateEvent([FromBody]UpdateEventRequestDTO updateEventRequest)
         {
-            bool updateEventResponse = _eventRepo.UpdateEvent(EventRecordTransformer.Transform(updateEventRequest.UpdatedEvent));
-            return new UpdateEventResponseDTO
+            try
             {
-                status = updateEventResponse
-            };
+                string updateEventResponse = _eventRepo.UpdateEvent(EventRecordTransformer.Transform(updateEventRequest.UpdatedEvent));
+                return new UpdateEventResponseDTO
+                {
+                    Status = updateEventResponse
+                };
+            }
+            catch(RepoException e)
+            {
+                return new UpdateEventResponseDTO()
+                {
+                    Status = e.Message
+                };
+            }
         }
 
         /// <summary>
@@ -106,11 +147,21 @@ namespace backend.Controllers
         [Route("deleteEvent/")]
         public DeleteEventResponseDTO DeleteEvent([FromBody]DeleteEventRequestDTO deleteEventRequest)
         {
-            bool deleteEventResponse = _eventRepo.DeleteEvent(deleteEventRequest.EventIdToDelete);
-            return new DeleteEventResponseDTO
+            try
             {
-                Status = deleteEventResponse
-            };
+                string deleteEventResponse = _eventRepo.DeleteEvent(deleteEventRequest.EventIdToDelete);
+                return new DeleteEventResponseDTO
+                {
+                    Status = deleteEventResponse
+                };
+            }
+            catch(RepoException e)
+            {
+                return new DeleteEventResponseDTO()
+                {
+                    Status = e.Message
+                };
+            }
         }
 
         /// <summary>
@@ -123,11 +174,21 @@ namespace backend.Controllers
         [Route("getEventsByUserId/")]
         public GetEventsByUserIdResponseDTO GetEventsByUserId([FromUri]GetEventsByUserIdRequestDTO currentUserId)
         {
-            List<EventRecord> userEvents = _eventRepo.GetEventsByUserId(currentUserId.UserId);
-            return new GetEventsByUserIdResponseDTO
+            try
             {
-                Events = userEvents.Select(x => EventRecordTransformer.Transform(x)).ToList()
-            };
+                List<EventRecord> userEvents = _eventRepo.GetEventsByUserId(currentUserId.UserId);
+                return new GetEventsByUserIdResponseDTO()
+                {
+                    Events = userEvents.Select(x => EventRecordTransformer.Transform(x)).ToList()             
+                };
+            }
+            catch(RepoException e)
+            {
+                return new GetEventsByUserIdResponseDTO()
+                {
+                    Status = e.Message
+                };
+            }
         }
 
         /// <summary>
@@ -140,11 +201,21 @@ namespace backend.Controllers
         [Route("getEventsByTimeRange/")]
         public GetEventsByTimeRangeResponseDTO PostGetEventsByTimeRange([FromBody]GetEventsByTimeRangeRequestDTO timeInterval)
         {
-            List<EventRecord> eventsInTimeInterval = _eventRepo.GetEventsByTimeRange(timeInterval.StartTime, timeInterval.EndTime);
-            return new GetEventsByTimeRangeResponseDTO
+            try
             {
-                Events = eventsInTimeInterval.Select(x => EventRecordTransformer.Transform(x)).ToList()
-            };
+                List<EventRecord> eventsInTimeInterval = _eventRepo.GetEventsByTimeRange(timeInterval.StartTime, timeInterval.EndTime);
+                return new GetEventsByTimeRangeResponseDTO
+                {
+                    Events = eventsInTimeInterval.Select(x => EventRecordTransformer.Transform(x)).ToList()
+                };
+            }
+            catch(RepoException e)
+            {
+                return new GetEventsByTimeRangeResponseDTO()
+                {
+                    Status = e.Message
+                };
+            }
         }
     }
 }

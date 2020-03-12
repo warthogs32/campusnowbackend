@@ -106,10 +106,10 @@ namespace backend.Tests
             BookmarkRepository repo = _bookmarkRepo;
 
             // Act
-            bool result = repo.AddNewBookmark(events[0]);
+            string result = repo.AddNewBookmark(events[0]);
 
             // Assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Contains("Successfully"));
         }
 
         [TestMethod]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.SqlClient;
+using backend.Exceptions;
 using System.Configuration;
 using backend.DTOs;
 using backend.Models;
@@ -54,70 +55,84 @@ namespace backend.Repositories
 
         public EventRecord GetEventById(int eventId)
         {
-            EventRecord retrievedEvent = new EventRecord();
-            using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
+            try
             {
-                conn.Open();
-                string getEventQuery = @"select * from cn.Events where ListingId = @eventId";
-                using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
+                EventRecord retrievedEvent = new EventRecord();
+                using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
                 {
-                    cmd.Parameters.AddWithValue("@eventId", eventId);
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    conn.Open();
+                    string getEventQuery = @"select * from cn.Events where ListingId = @eventId";
+                    using (SqlCommand cmd = new SqlCommand(getEventQuery, conn))
                     {
-                        if (reader.Read())
+                        cmd.Parameters.AddWithValue("@eventId", eventId);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            retrievedEvent = new EventRecord()
+                            if (reader.Read())
                             {
-                                ListingId = Int32.Parse(reader["ListingId"].ToString()),
-                                Title = reader["Title"].ToString(),
-                                Description = reader["Description"].ToString(),
-                                StartTime = DateTime.Parse(reader["StartTime"].ToString()),
-                                EndTime = DateTime.Parse(reader["EndTime"].ToString()),
-                                LocX = float.Parse(reader["LocX"].ToString()),
-                                LocY = float.Parse(reader["LocY"].ToString()),
-                                UserId = Int32.Parse(reader["UserId"].ToString())
-                            };
+                                retrievedEvent = new EventRecord()
+                                {
+                                    ListingId = Int32.Parse(reader["ListingId"].ToString()),
+                                    Title = reader["Title"].ToString(),
+                                    Description = reader["Description"].ToString(),
+                                    StartTime = DateTime.Parse(reader["StartTime"].ToString()),
+                                    EndTime = DateTime.Parse(reader["EndTime"].ToString()),
+                                    LocX = float.Parse(reader["LocX"].ToString()),
+                                    LocY = float.Parse(reader["LocY"].ToString()),
+                                    UserId = Int32.Parse(reader["UserId"].ToString())
+                                };
+                            }
                         }
                     }
-                }               
+                }
+                return retrievedEvent;
             }
-            return retrievedEvent;
+            catch(SqlException e)
+            {
+                throw new RepoException(e.Message);
+            }
         }
 
         public List<EventRecord> GetAllEvents()
         {
-            List<EventRecord> response = new List<EventRecord>();
-            EventRecord retrievedEvent;
-            using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
+            try
             {
-                conn.Open();
-                string getEventsQuery = "select * from cn.Events";
-                using (SqlCommand cmd = new SqlCommand(getEventsQuery, conn))
+                List<EventRecord> response = new List<EventRecord>();
+                EventRecord retrievedEvent;
+                using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
                 {
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    conn.Open();
+                    string getEventsQuery = "select * from cn.Events";
+                    using (SqlCommand cmd = new SqlCommand(getEventsQuery, conn))
                     {
-                        while (reader.Read())
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            retrievedEvent = new EventRecord()
+                            while (reader.Read())
                             {
-                                ListingId = Int32.Parse(reader["ListingId"].ToString()),
-                                Title = reader["Title"].ToString(),
-                                Description = reader["Description"].ToString(),
-                                StartTime = DateTime.Parse(reader["StartTime"].ToString()),
-                                EndTime = DateTime.Parse(reader["EndTime"].ToString()),
-                                LocX = float.Parse(reader["LocX"].ToString()),
-                                LocY = float.Parse(reader["LocY"].ToString()),
-                                UserId = Int32.Parse(reader["UserId"].ToString())
-                            };
-                            response.Add(retrievedEvent);
+                                retrievedEvent = new EventRecord()
+                                {
+                                    ListingId = Int32.Parse(reader["ListingId"].ToString()),
+                                    Title = reader["Title"].ToString(),
+                                    Description = reader["Description"].ToString(),
+                                    StartTime = DateTime.Parse(reader["StartTime"].ToString()),
+                                    EndTime = DateTime.Parse(reader["EndTime"].ToString()),
+                                    LocX = float.Parse(reader["LocX"].ToString()),
+                                    LocY = float.Parse(reader["LocY"].ToString()),
+                                    UserId = Int32.Parse(reader["UserId"].ToString())
+                                };
+                                response.Add(retrievedEvent);
+                            }
                         }
                     }
                 }
+                return response;
             }
-            return response;
+            catch(SqlException e)
+            {
+                throw new RepoException(e.Message);
+            }
         }
 
-        public bool PostNewEvent(EventRecord newEvent)
+        public string PostNewEvent(EventRecord newEvent)
         {
             try
             {
@@ -139,15 +154,15 @@ namespace backend.Repositories
                         cmd.ExecuteNonQuery();
                     }
                 }
+                return string.Format("Successfully created event {0}", newEvent.Title);
             }
             catch(SqlException e)
             {
-                return false;
+                throw new RepoException(e.Message);
             }
-            return true;
         }
 
-        public bool UpdateEvent(EventRecord updated)
+        public string UpdateEvent(EventRecord updated)
         {
             if (DoesEventBelongToUser(updated.ListingId) || LoginRepository.CurrentUser.IsAdmin)
             {
@@ -172,20 +187,20 @@ namespace backend.Repositories
                             cmd.ExecuteNonQuery();
                         }
                     }
+                    return string.Format("Successfully updated event {0}", updated.Title);
                 }
                 catch (SqlException e)
                 {
-                    return false;
+                    throw new RepoException(e.Message);
                 }
-                return true;
             }
             else 
             {
-                return false;
+                throw new RepoException("Event does not belong to user!");
             }
         }
 
-        public bool DeleteEvent(int eventId)
+        public string DeleteEvent(int eventId)
         {
             if (DoesEventBelongToUser(eventId) || LoginRepository.CurrentUser.IsAdmin)
             {
@@ -201,16 +216,16 @@ namespace backend.Repositories
                             cmd.ExecuteNonQuery();
                         }
                     }
-                    return true;
+                    return string.Format("Successfully deleted event {0}", eventId);
                 }
                 catch (SqlException e)
                 {
-                    return false;
+                    throw new RepoException(e.Message);
                 }
             }
             else
             {
-                return false;
+                throw new RepoException("Event does not belong to user!");
             }
         }
 
@@ -250,7 +265,7 @@ namespace backend.Repositories
             }
             catch(SqlException e)
             {
-                return new List<EventRecord>();
+                throw new RepoException(e.Message);
             }
             return response;
         }
@@ -261,6 +276,10 @@ namespace backend.Repositories
             EventRecord userEvent;
             try
             {
+                if (!(startTime < endTime))
+                {
+                    throw new ArgumentException("Starttime must be before endtime!");
+                }
                 using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
                 {
                     conn.Open();
@@ -292,7 +311,11 @@ namespace backend.Repositories
             }
             catch (SqlException e)
             {
-                return new List<EventRecord>();
+                throw new RepoException(e.Message);
+            }
+            catch(ArgumentException e)
+            {
+                throw new RepoException(e.Message);
             }
             return response;
         }

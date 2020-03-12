@@ -8,6 +8,7 @@ using System.Web.Http.Cors;
 using System.Diagnostics.CodeAnalysis;
 using System.Web.Http.Description;
 using backend.Repositories;
+using backend.Exceptions;
 using backend.DTOs;
 using backend.Transformers;
 using backend.Models;
@@ -31,13 +32,22 @@ namespace backend.Controllers
         [HttpPost]
         public AddNewBookmarkResponseDTO PostAddNewBookmark([FromBody]AddNewBookmarkRequestDTO addBookmarkRequest)
         {
-            EventRecord eventRecord = EventRecordTransformer.Transform(addBookmarkRequest.EventRecord);
-
-            bool status = _bookmarkRepo.AddNewBookmark(eventRecord);
-            return new AddNewBookmarkResponseDTO()
+            try
             {
-                Status = status
-            };
+                EventRecord eventRecord = EventRecordTransformer.Transform(addBookmarkRequest.EventRecord);
+                string addNewBookmarkResponse = _bookmarkRepo.AddNewBookmark(eventRecord);
+                return new AddNewBookmarkResponseDTO()
+                {
+                    Status = addNewBookmarkResponse
+                };
+            }
+            catch(RepoException e)
+            {
+                return new AddNewBookmarkResponseDTO()
+                {
+                    Status = e.Message
+                };
+            }
         }
 
         /// <summary>
@@ -50,11 +60,21 @@ namespace backend.Controllers
         [HttpGet]
         public GetBookmarkedEventsResponseDTO GetAllBookmarkedEvents()
         {
-            List<EventRecord> allEvents = _bookmarkRepo.GetAllBookmarkedEvents();
-            return new GetBookmarkedEventsResponseDTO()
+            try
             {
-                EventRecords = allEvents.Select(x => EventRecordTransformer.Transform(x)).ToList()
-            };
+                List<EventRecord> allEvents = _bookmarkRepo.GetAllBookmarkedEvents();
+                return new GetBookmarkedEventsResponseDTO()
+                {
+                    EventRecords = allEvents.Select(x => EventRecordTransformer.Transform(x)).ToList()
+                };
+            }
+            catch(RepoException e)
+            {
+                return new GetBookmarkedEventsResponseDTO()
+                {
+                    Status = e.Message
+                };
+            }
         }
     }
 }

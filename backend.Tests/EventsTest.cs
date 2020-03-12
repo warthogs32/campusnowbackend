@@ -152,10 +152,10 @@ namespace backend.Tests
             };
 
             // Act
-            bool result = repo.UpdateEvent(record);
+            string result = repo.UpdateEvent(record);
 
             // Assert
-            Assert.IsTrue(result);
+            Assert.AreEqual(result, string.Format("Successfully updated event {0}", record.Title));
         }
 
         [TestMethod]
@@ -168,10 +168,10 @@ namespace backend.Tests
             int toDelete = TestEventList[1].ListingId;
 
             // Act
-            bool result = repo.DeleteEvent(toDelete);
+            string result = repo.DeleteEvent(toDelete);
 
             // Assert
-            Assert.IsTrue(result);
+            Assert.AreEqual(result, string.Format("Successfully deleted event {0}", toDelete));
         }
 
         [TestMethod]

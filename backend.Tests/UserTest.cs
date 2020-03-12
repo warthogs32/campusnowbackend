@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using backend.Exceptions;
 using backend.Repositories;
 using backend.Models;
 
@@ -73,10 +74,10 @@ namespace backend.Tests
             };
 
             // Act
-            bool result = _userRepo.PostNewUser(user);
+            string result = _userRepo.PostNewUser(user);
 
             // Assert
-            Assert.IsTrue(result);
+            Assert.AreEqual(result, string.Format("Welcome {0}", user.FirstName));
         }
 
         [TestMethod]
@@ -93,11 +94,8 @@ namespace backend.Tests
                 IsAdmin = false
             };
 
-            // Act
-            bool result = _userRepo.PostNewUser(user);
-
-            // Assert
-            Assert.IsFalse(result);
+            // Act => Assert
+            Assert.ThrowsException<RepoException>(() => _userRepo.PostNewUser(user));
         }
         [TestMethod]
         public void TestIsUserLoginValid()

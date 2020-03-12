@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace backend.DTOs
 {
-    public class GetCurrentUserResponseDTO
+    public class GetCurrentUserResponseDTO : ResponseDTO
     {
         public UserRecordDTO CurrentUser { get; set; }
     }

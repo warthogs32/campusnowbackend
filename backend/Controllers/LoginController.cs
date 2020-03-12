@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Web;
 using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using backend.Exceptions;
 using Microsoft.IdentityModel.Tokens;
 using backend.DTOs;
 using System.Web.Http;
@@ -55,9 +56,9 @@ namespace backend.Controllers
             else
             {
                 // if credentials are not valid send unauthorized status code in response
-                loginResponse.responseMsg = new HttpResponseMessage();
-                loginResponse.responseMsg.StatusCode = HttpStatusCode.Unauthorized;
-                response = ResponseMessage(loginResponse.responseMsg);
+                loginResponse.ResponseMsg = new HttpResponseMessage();
+                loginResponse.ResponseMsg.StatusCode = HttpStatusCode.Unauthorized;
+                response = ResponseMessage(loginResponse.ResponseMsg);
                 return response;
             }
         }
@@ -71,10 +72,20 @@ namespace backend.Controllers
         [HttpGet]
         public LogoutResponseDTO Logout()
         {
-            return new LogoutResponseDTO()
-            { 
-                status = LoginRepository.Logout(LoginRepository.CurrentUser.Token)
-            };
+            try
+            {
+                return new LogoutResponseDTO()
+                {
+                    Status = LoginRepository.Logout(LoginRepository.CurrentUser.Token)
+                };
+            }
+            catch(RepoException e)
+            {
+                return new LogoutResponseDTO()
+                {
+                    Status = e.Message
+                };
+            }
         }
 
         /// <summary>
