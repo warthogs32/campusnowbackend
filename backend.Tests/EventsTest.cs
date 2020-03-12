@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using backend.Models;
 using System.Diagnostics.CodeAnalysis;
+using backend.Exceptions;
 using backend.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -206,11 +207,8 @@ namespace backend.Tests
             DateTime end = new DateTime(2020, 2, 25, 12, 0, 0);
             int expectedEventCount = 0;
 
-            // Act
-            List<EventRecord> records = repo.GetEventsByTimeRange(start, end);
-
-            // Assert
-            Assert.AreEqual(expectedEventCount, records.Count);
+            // Act => Assert
+            Assert.ThrowsException<RepoException>(() => repo.GetEventsByTimeRange(start, end));
         }
         [TestMethod]
         public void TestGetEventByUserId()
