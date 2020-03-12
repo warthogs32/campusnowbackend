@@ -226,7 +226,7 @@ namespace backend.Controllers
         [Route("getEventsInRadius/")]
         [ResponseType(typeof(GetAllEventsResponseDTO))]
         [HttpGet]
-        public GetEventsByRadiusResponseDTO GetEventsByRadius(GetEventsByRadiusRequestDTO region)
+        public GetEventsByRadiusResponseDTO GetEventsByRadius([FromBody]GetEventsByRadiusRequestDTO region)
         {
             try
             {
