@@ -537,6 +537,13 @@
             <param name="timeInterval"></param>
             <returns>List of event records in a specified time range.</returns>
         </member>
+        <member name="M:backend.Controllers.EventController.GetEventsByRadius(backend.DTOs.GetEventsByRadiusRequestDTO)">
+            <summary>
+            Retrieves all within a given distance from given coordinates
+            </summary>
+            <param name="region"></param>
+            <returns>List of event records with the radius of (X,Y).</returns>
+        </member>
         <member name="M:backend.Controllers.LoginController.Authenticate(backend.DTOs.LoginRequestDTO)">
             <summary>
             User login.

@@ -320,6 +320,59 @@ namespace backend.Repositories
             return response;
         }
 
+        public List<EventRecord> GetEventsByRadius (float centerX, float centerY, float radius)
+        {
+            List<EventRecord> response = new List<EventRecord>();
+            EventRecord userEvent;
+            try
+            {
+                if (radius < 0)
+                {
+                    throw new ArgumentException("Radius must be positive");
+                }
+                using (SqlConnection conn = new SqlConnection(_sqlConnectionString))
+                {
+                    conn.Open();
+                    string getEventByUserIdQuery = @"select * from cn.Events";
+                    using (SqlCommand cmd = new SqlCommand(getEventByUserIdQuery, conn))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                userEvent = new EventRecord()
+                                {
+                                    ListingId = Int32.Parse(reader["ListingId"].ToString()),
+                                    Title = reader["Title"].ToString(),
+                                    Description = reader["Description"].ToString(),
+                                    StartTime = DateTime.Parse(reader["StartTime"].ToString()),
+                                    EndTime = DateTime.Parse(reader["EndTime"].ToString()),
+                                    LocX = float.Parse(reader["LocX"].ToString()),
+                                    LocY = float.Parse(reader["LocY"].ToString()),
+                                    UserId = Int32.Parse(reader["UserId"].ToString())
+                                };
+                                double distance = Math.Sqrt(
+                                    Math.Pow(userEvent.LocX - centerX, 2) + Math.Pow(userEvent.LocY - centerY, 2));
+                                if (distance < radius)
+                                {
+                                    response.Add(userEvent);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                throw new RepoException(e.Message);
+            }
+            catch (ArgumentException e)
+            {
+                throw new RepoException(e.Message);
+            }
+            return response;
+        }
+
         /*
         * The methods below are to be used only for testing, and
         * will not work on the production database
