@@ -60,7 +60,7 @@ namespace backend.Repositories
                                     Password = reader["Password"].ToString(),
                                     FirstName = reader["FirstName"].ToString(),
                                     LastName = reader["LastName"].ToString(),
-                                    IsAdmin = Convert.ToBoolean(Int32.Parse(reader["IsAdmin"].ToString())),
+                                    IsAdmin = Convert.ToBoolean(reader["IsAdmin"].ToString()),
                                     JoinDate = DateTime.Parse(reader["JoinDate"].ToString())
                                 };
                             }
